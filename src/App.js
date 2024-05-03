@@ -20,18 +20,21 @@ firebase.initializeApp({
 const auth = firebase.auth();
 
 const App = () => {
+  
   const [user] = useAuthState(auth);
-  return (
-    <div>
-      {user ? <><Sidebar /><ContentContainer /></> : <SignIn />}
-      
-    </div>
-  );
+
+    return (
+      <div>
+        {user ? <><Sidebar /><ContentContainer /></> : <SignIn />}
+      </div>
+    );
 };
 
 const SignIn = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [signusername, setsignUsername] = React.useState('');
+  const [signpassword, setsignPassword] = React.useState('');
   async function signIn(e) {
     e.preventDefault();
     const loginauth = getAuth();
@@ -47,6 +50,15 @@ const SignIn = () => {
         console.log(errorCode, errorMessage);
       });
   }
+  async function signUp(e) {
+    e.preventDefault();
+    try {
+      await auth.createUserWithEmailAndPassword(signusername + "@orange.is-great.net", signpassword);
+      console.log(auth.currentUser);
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   return (
     <div className='sign-in-container'>
@@ -56,6 +68,13 @@ const SignIn = () => {
             <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className="input"/><br />
             <button type='submit'>Log in</button>
             <p>This is a temporary login page</p>
+        </form><br />
+        <h1>Sign Up</h1>
+        <form onSubmit={signUp}>
+            <input type="text" placeholder='Username' value={signusername} onChange={(e) => setsignUsername(e.target.value)} className="input"/><br />
+            <input type="password" placeholder='Password' value={signpassword} onChange={(e) => setsignPassword(e.target.value)} className="input"/><br />
+            <button type='submit'>Sign Up</button>
+            <p>This is a temporary Signup page</p>
         </form>
     </div>
   )

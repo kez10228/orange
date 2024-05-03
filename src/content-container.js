@@ -29,8 +29,7 @@ const ContentContainer = () => {
 
 function Chatmsg(props) {
 
-    const { text, uid, name } = props.message;
-    console.log(name)
+    const { text, name } = props.message;
     
     return (
         <div className="chat-msg">
