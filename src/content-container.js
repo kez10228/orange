@@ -83,7 +83,7 @@ const ChatRoom = () => {
                 <span ref={dummy}></span>
             </div>
             <form onSubmit={sendMessage} style={{ overflow: 'hidden', padding: '10px' }}>
-                <input value={formValue} onChange={(e) => setFormValue(e.target.value)} type="text" className="input_box" placeholder="Say something RUDE like SHIT"/>
+                <input value={formValue} onChange={(e) => setFormValue(e.target.value)} type="text" className="input_box" placeholder="Say something RUDE like SH*T"/>
             </form>
         </div>
       </>
