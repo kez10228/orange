@@ -6,6 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
+import Panel from "./panel";
 
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -25,7 +26,7 @@ const App = () => {
 
     return (
       <div>
-        {user ? <><Sidebar /><ContentContainer /></> : <SignIn />}
+        {user ? <><Sidebar /><div className="content"><Panel /><ContentContainer /></div></> : <SignIn />}
       </div>
     );
 };

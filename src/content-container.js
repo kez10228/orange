@@ -5,6 +5,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
   authDomain: "orange-ad7c2.firebaseapp.com",

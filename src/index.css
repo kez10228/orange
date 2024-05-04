@@ -25,7 +25,7 @@
       @apply flex flex-col
     bg-gray-700
       m-0 w-full overflow-y-hidden
-      h-screen pl-20 pb-5;
+      h-screen pl-5 pb-5;
     }
     
     .input_box {
@@ -58,5 +58,14 @@
 
     button {
       @apply rounded-md border-2 border-black text-black font-bold py-2 px-4 m-2 w-auto
+    }
+
+    .panel {
+      @apply flex flex-col
+      h-screen bg-gray-800 pl-20 w-64 ml-16;
+    }
+
+    .content {
+      @apply flex flex-row
     }
 }
