@@ -37,7 +37,7 @@
     }
 
     .pfp {
-      @apply w-10 h-10 rounded-full mr-2
+      @apply w-10 h-10 rounded-full mr-2 
     }
 
     .msg-content {
