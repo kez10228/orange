@@ -62,10 +62,44 @@
 
     .panel {
       @apply flex flex-col
-      h-screen bg-gray-800 pl-20 w-64 ml-16;
+      h-screen bg-gray-800 ml-16;
     }
 
     .content {
       @apply flex flex-row
     }
+
+    .user {
+      @apply flex flex-row bg-gray-900 z-10 h-14 bottom-0 fixed items-center pl-2
+    }
+
+    .user {
+      min-width: 240px;
+    }
+
+    .panel {
+      min-width: 240px;
+    }
+
+    .sub-user {
+      @apply text-gray-400 flex flex-col w-full -translate-x-4
+    }
+
+    .sub-text {
+      @apply text-gray-500 text-sm 
+    }
+
+    .online {
+      @apply -translate-x-5 translate-y-3 scale-125 mr-0 pr-0
+    }
+
+    h2 {
+      @apply font-bold text-2xl text-white self-center text-center mt-3 mb-3 
+    }
+
+    hr {
+      @apply border-gray-600 border-2
+    }
+
+    
 }

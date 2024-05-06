@@ -4,6 +4,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useCookies } from 'react-cookie'
+import { useIsTyping } from 'use-is-typing';
 
 
 firebase.initializeApp({
@@ -44,9 +46,10 @@ function Chatmsg(props) {
 }
 
 const ChatRoom = () => {
+    const [isTyping, register] = useIsTyping();
+    const [cookie, setCookie] = useCookies(['channel'])
     const messagesRef = firestore.collection('messages');
-    const query = messagesRef.orderBy('createdAt');
-  
+    const query = messagesRef.where('channel', '==', decodeURI(cookie.channel)).orderBy("createdAt");
     const [messages] = useCollectionData(query, { idField: 'id' });
 
     const [formValue, setFormValue] = useState('');
@@ -54,7 +57,7 @@ const ChatRoom = () => {
 
     const sendMessage = async (e) => {
         e.preventDefault();
-    
+        if (!formValue) return;
         const { uid } = auth.currentUser;
         const name = auth.currentUser.email.slice(0, -20);
     
@@ -62,7 +65,8 @@ const ChatRoom = () => {
           text: formValue,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid,
-          name
+          name,
+          channel: cookie.channel
         })
     
         setFormValue('');
@@ -83,7 +87,7 @@ const ChatRoom = () => {
                 <span ref={dummy}></span>
             </div>
             <form onSubmit={sendMessage} style={{ overflow: 'hidden', padding: '10px' }}>
-                <input value={formValue} onChange={(e) => setFormValue(e.target.value)} type="text" className="input_box" placeholder="Say something RUDE like SH*T"/>
+                <input value={formValue} onChange={(e) => setFormValue(e.target.value)} type="text" ref={register} className="input_box" placeholder="Say something RUDE like SH*T"/>
             </form>
         </div>
       </>
