@@ -3,6 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCookies } from 'react-cookie'
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
     apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -15,14 +16,26 @@ firebase.initializeApp({
   });
 
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 const Panel = () => {
-    const [cookies, setCookies] = useCookies(['channel'])
+    const [cookies, setCookies] = useCookies(['channel', 'user']);
+    const messageRef = firestore.collection('user-info');
+    const query = messageRef.orderBy('createdAt').limit(25);
+    const [users] = useCollectionData(query, { idField: 'id' });
+    var available = false;
+    if (cookies.channel === "Orange / Private Messages") {
+        available = true;
+    } else {
+        available = false;
+    }
     return (
         <div className="panel">
             <div className="panel-header">
                 <h2>{cookies.channel}</h2>
                 <hr />
+                <br />
+                {available ? users && users.map(user => <p key={user.id} onClick={() => setCookies('user', user.username)}>{user.username}</p>) : null}
             </div>
             <div className="user">
                 <img src={user} alt="pfp" className='pfp' />

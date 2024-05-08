@@ -29,7 +29,7 @@ const Sidebar = () => {
 
   return (
     <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg">
-        <SidebarIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
+        <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
         <Divider />
         <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
 
@@ -42,6 +42,7 @@ const Sidebar = () => {
     </div>
   );    
 };
+
 
 const ChannelIcon = ({ icon, text }) => {
     const [cookies, setCookie] = useCookies(['channel'])

@@ -12,7 +12,9 @@
     }
 
     .tooltip {
-      @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md text-white bg-gray-900 text-xs font-extrabold transition-all duration-100 scale-0 origin-left;
+      @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md 
+      text-white bg-gray-900 text-xs font-extrabold transition-all 
+      duration-100 scale-0 origin-left;
     }
 
     .sidebar-hr {
@@ -29,7 +31,8 @@
     }
     
     .input_box {
-      @apply mt-auto mr-20 rounded-md bg-gray-600 h-10 pl-5 placeholder:text-gray-500 text-gray-400 w-auto box-border w-full;
+      @apply mt-auto mr-20 rounded-md bg-gray-600 h-10 pl-5 placeholder:text-gray-500
+       text-gray-400 w-auto box-border w-full;
     }
 
     .chat-msg {
@@ -49,7 +52,8 @@
     }
 
     .input {
-      @apply border-black border-2 rounded-md m-2 h-10 w-auto placeholder:text-gray-500 text-gray-400 box-border;
+      @apply border-black border-2 rounded-md m-2 h-10 
+      w-auto placeholder:text-gray-500 text-gray-400 box-border;
     }
 
     h1 {
@@ -75,6 +79,7 @@
 
     .user {
       min-width: 240px;
+      width: fit-content;
     }
 
     .panel {
@@ -101,5 +106,7 @@
       @apply border-gray-600 border-2
     }
 
-    
+    p {
+      @apply text-white ml-5 cursor-pointer
+    }
 }

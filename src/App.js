@@ -19,6 +19,7 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 const App = () => {
   
@@ -52,6 +53,8 @@ const SignIn = () => {
       });
   }
   async function signUp(e) {
+    const messagesRef = firestore.collection('user-info');
+
     e.preventDefault();
     try {
       await auth.createUserWithEmailAndPassword(signusername + "@orange.is-great.net", signpassword);
@@ -59,6 +62,11 @@ const SignIn = () => {
     } catch (error) {
       alert(error);
     }
+
+    await messagesRef.add({
+      username: signusername,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   }
 
   return (
