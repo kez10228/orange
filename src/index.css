@@ -109,4 +109,8 @@
     p {
       @apply text-white ml-5 cursor-pointer
     }
+
+    .username {
+      @apply mb-3
+    }
 }

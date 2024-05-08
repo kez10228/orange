@@ -35,7 +35,7 @@ const Panel = () => {
                 <h2>{cookies.channel}</h2>
                 <hr />
                 <br />
-                {available ? users && users.map(user => <p key={user.id} onClick={() => setCookies('user', user.username)}>{user.username}</p>) : null}
+                {available ? users && users.map(user => <p className="username" key={user.id} onClick={() => setCookies('user', user.username)}>{user.username}</p>) : null}
             </div>
             <div className="user">
                 <img src={user} alt="pfp" className='pfp' />
