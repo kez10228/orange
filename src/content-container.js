@@ -93,7 +93,7 @@ const ChatRoom = () => {
     }, [dummy]);
     var query = messagesRef.where('channel', '==', decodeURI(cookie.channel)).orderBy("createdAt");
     if (cookie.user && cookie.channel === 'Orange / Private Messages') {
-        query = messagesRef.where('channel', '==', cookie.user).orderBy("createdAt");
+        query = messagesRef.where('channel', '==', cookie.user).where('name', '==', auth.currentUser.email.slice(0, -20)).orderBy("createdAt");
     } else {
         query = messagesRef.where('channel', '==', decodeURI(cookie.channel)).orderBy("createdAt");
     }
