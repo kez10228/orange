@@ -22,13 +22,22 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 const App = () => {
-  
   const [user] = useAuthState(auth);
 
     return (
+      <>
       <div>
-        {user ? <><Sidebar /><div className="content"><Panel /><ContentContainer /></div></> : <SignIn />}
+        {user ? 
+        <>
+          <Sidebar />
+          <div className="content">
+            <Panel /><ContentContainer />
+          </div>
+        </>
+         : <SignIn />}
       </div>
+      </>
+      
     );
 };
 

@@ -26,7 +26,10 @@ const ContentContainer = () => {
 
 
     return (
-        <ChatRoom />
+        <>
+            <ChatRoom />
+        </>
+        
     );
 }
 
