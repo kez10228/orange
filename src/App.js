@@ -6,6 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
+import 'firebase/compat/database';
 import Panel from "./panel";
 import { getNotifToken, onMessageListener } from "./requestNotifToken";
 
@@ -13,17 +14,44 @@ import { getNotifToken, onMessageListener } from "./requestNotifToken";
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
   authDomain: "orange-ad7c2.firebaseapp.com",
+  databaseURL: "https://orange-ad7c2-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "orange-ad7c2",
   storageBucket: "orange-ad7c2.appspot.com",
   messagingSenderId: "634548881107",
   appId: "1:634548881107:web:192a3a3f247e25540e3626",
-  measurementId: "G-7V3KZ2C9RQ",
+  measurementId: "G-7V3KZ2C9RQ"
 });
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const db = firebase.database()
+
+
 
 const App = () => {
+  const [user] = useAuthState(auth);
+  if (user) {
+    var uid = auth.currentUser.uid;
+    var userStatusDatabaseRef = db.ref('/status/' + uid);
+    var isOfflineForDatabase = {
+      state: 'offline',
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    var isOnlineForDatabase = {
+      state: 'online',
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    firebase.database().ref('.info/connected').on('value', function(snapshot) {
+      if (snapshot.val() === false) {
+          return;
+      };
+      userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function() {
+          userStatusDatabaseRef.set(isOnlineForDatabase);
+      });
+    });
+  }
+
+  
   getNotifToken();
   onMessageListener()
     .then(payload => {
@@ -32,7 +60,6 @@ const App = () => {
     .catch(err => {
       console.log(err);
     });
-  const [user] = useAuthState(auth);
 
     return (
       <>
@@ -85,6 +112,7 @@ const SignIn = () => {
     await messagesRef.add({
       username: signusername,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid: auth.currentUser.uid,
     });
   }
 
