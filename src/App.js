@@ -7,6 +7,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import Panel from "./panel";
+import { getNotifToken, onMessageListener } from "./requestNotifToken";
+
 
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -22,6 +24,14 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 const App = () => {
+  getNotifToken();
+  onMessageListener()
+    .then(payload => {
+        console.log(payload);
+     })
+    .catch(err => {
+      console.log(err);
+    });
   const [user] = useAuthState(auth);
 
     return (

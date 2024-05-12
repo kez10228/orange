@@ -1,12 +1,11 @@
 import user from './OIG4.jpg';
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie'
 import { useIsTyping } from 'use-is-typing';
-
 
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -19,9 +18,9 @@ firebase.initializeApp({
 });
 
 
+
 const firestore = firebase.firestore();
 const auth = firebase.auth();
-
 const ContentContainer = () => {
 
 
@@ -55,7 +54,6 @@ const ChatRoom = () => {
     if (!cookie.channel || cookie.channel === '') {
         setCookie('channel', 'Orange / Private Messages', { path: '/' })
     }
-
     const [formValue, setFormValue] = useState('');
     const dummy = useRef();
 
@@ -90,17 +88,20 @@ const ChatRoom = () => {
         dummy.current.scrollIntoView({ behavior: 'smooth' });
     }
 
-    useLayoutEffect(() => {
-        if (dummy.current) 
-            dummy.current.scrollIntoView({ behavior: 'smooth' })
-    }, [dummy]);
+
+
     var query = messagesRef.where('channel', '==', decodeURI(cookie.channel)).orderBy("createdAt");
     if (cookie.user && cookie.channel === 'Orange / Private Messages') {
-        query = messagesRef.where('channel', '==', cookie.user).where('name', '==', auth.currentUser.email.slice(0, -20)).orderBy("createdAt");
+        query = messagesRef.where('channel', 'in', [cookie.user, auth.currentUser.email.slice(0, -20)]).where('name', 'in', [auth.currentUser.email.slice(0, -20), cookie.user]).orderBy("createdAt");
+          
     } else {
         query = messagesRef.where('channel', '==', decodeURI(cookie.channel)).orderBy("createdAt");
     }
     const [messages] = useCollectionData(query, { idField: 'id' });
+    React.useEffect(() => {
+        if (dummy.current) 
+            dummy.current.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
     return (<>
         <div className="content-container">
             <div style={{ height: '90vh', overflowY:'scroll' , overflowX: 'hidden'}}>
