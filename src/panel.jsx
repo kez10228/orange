@@ -4,7 +4,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCookies } from 'react-cookie'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 firebase.initializeApp({
     apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -33,9 +33,9 @@ const Panel = () => {
     } else {
         available = false;
     }
-    const presenceRef = ref(db, 'status');
+    const ref = db.ref('status')
     var data = {};
-    presenceRef.on('value', (snapshot) => {
+    ref.on('value', (snapshot) => {
         data = snapshot.val()
         console.log(snapshot.val());
     }, (errorObject) => {
