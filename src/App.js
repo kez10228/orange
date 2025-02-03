@@ -51,16 +51,6 @@ const App = () => {
     });
   }
 
-  
-  getNotifToken();
-  onMessageListener()
-    .then(payload => {
-        console.log(payload);
-     })
-    .catch(err => {
-      console.log(err);
-    });
-
     return (
       <>
       <div>
