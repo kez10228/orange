@@ -33,7 +33,7 @@ const Panel = () => {
     } else {
         available = false;
     }
-    const ref = db.ref('status')
+    const ref = db.ref('status');
     var data = {};
     ref.on('value', (snapshot) => {
         data = snapshot.val()
