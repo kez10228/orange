@@ -35,10 +35,12 @@ const Panel = () => {
     }
     const presenceRef = ref(db, 'status');
     var data = {};
-    onValue(presenceRef, (snapshot) => {
-        data = snapshot.val();
-        console.log(data);
-    });
+    presenceRef.on('value', (snapshot) => {
+        data = snapshot.val()
+        console.log(snapshot.val());
+    }, (errorObject) => {
+        console.log('The read failed: ' + errorObject.name);
+    }); 
     return (
         <div className="panel">
             <div className="panel-header">
