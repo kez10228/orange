@@ -4,7 +4,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCookies } from 'react-cookie'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { getDatabase } from "firebase/database";
+import { getDatabase, onValue } from "firebase/database";
 
 firebase.initializeApp({
     apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -35,12 +35,9 @@ const Panel = () => {
     }
     const ref = db.ref('status');
     var data = {};
-    ref.on('value', (snapshot) => {
-        data = snapshot.val()
-        console.log(snapshot.val());
-    }, (errorObject) => {
-        console.log('The read failed: ' + errorObject.name);
-    }); 
+    onValue(ref, (snapshot) => {
+      data = snapshot.val();
+    });
     return (
         <div className="panel">
             <div className="panel-header">
