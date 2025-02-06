@@ -19,33 +19,46 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const db = getDatabase();
 
 const Panel = () => {
-    
+    const db = getDatabase();
     const [cookies, setCookies] = useCookies(['channel', 'user']);
     const messageRef = firestore.collection('user-info');
     const query = messageRef.orderBy('createdAt').limit(25);
     const [users] = useCollectionData(query, { idField: 'id' });
+    var data = {};
+    const presref = ref(db, 'status');
     var available = false;
+    console.log(users);
+
+    const index = users?.findIndex(user => user.uid === auth.currentUser.uid);
+    if (index > -1) {
+        users.splice(index, 1);
+    }
+
     if (cookies.channel === "Orange / Private Messages") {
         available = true;
     } else {
         available = false;
     }
-    const presenceRef = ref(db, 'status');
-    var data = {};
-    onValue(presenceRef, (snapshot) => {
+
+    onValue(presref, (snapshot) => {
         data = snapshot.val();
-        console.log(data);
     });
+
     return (
         <div className="panel">
             <div className="panel-header">
                 <h2>{cookies.channel}</h2>
                 <hr />
                 <br />  
-                {available ? users && users.map(user => <UserIndicator state={data[user.uid]['state']} key={user.id} text={user.username}></UserIndicator>) : null}
+                {available ? users && users.map(user => 
+                    <UserIndicator 
+                        state={data[user.uid]?.state || 'offline'} 
+                        key={user.id} 
+                        text={user.username}
+                    />
+                ) : null}
             </div>
             <div className="user">
                 <img src={user} alt="pfp" className='pfp' />
@@ -74,7 +87,6 @@ const Panel = () => {
 
 const UserIndicator = ({ text, state }) => {
     const [cookies, setCookies] = useCookies(['channel', 'user']);
-    console.log(state)
     let presence = '';
     if (state === "online") {
         presence = <svg y={17} width={25} height={15} className="online2" viewBox="0 0 25 15">

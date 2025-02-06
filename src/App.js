@@ -8,7 +8,6 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import Panel from "./panel";
-import { getNotifToken, onMessageListener } from "./requestNotifToken";
 
 
 firebase.initializeApp({
@@ -30,36 +29,29 @@ const db = firebase.database()
 
 const App = () => {
   const [user] = useAuthState(auth);
+  
   if (user) {
     var uid = auth.currentUser.uid;
     var userStatusDatabaseRef = db.ref('/status/' + uid);
-    var isOfflineForDatabase = {
-      state: 'offline',
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
-    };
-    var isOnlineForDatabase = {
-      state: 'online',
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
-    };
-    firebase.database().ref('.info/connected').on('value', function(snapshot) {
-      if (snapshot.val() === false) {
-          return;
+
+      var isOfflineForDatabase = {
+        state: 'offline',
+        last_changed: firebase.database.ServerValue.TIMESTAMP,
       };
-      userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function() {
-          userStatusDatabaseRef.set(isOnlineForDatabase);
+      var isOnlineForDatabase = {
+        state: 'online',
+        last_changed: firebase.database.ServerValue.TIMESTAMP,
+      };
+      firebase.database().ref('.info/connected').on('value', function(snapshot) {
+        if (snapshot.val() === false) {
+            return;
+        };
+        userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function() {
+            userStatusDatabaseRef.set(isOnlineForDatabase);
+        });
       });
-    });
   }
 
-  
-  getNotifToken();
-  onMessageListener()
-    .then(payload => {
-        console.log(payload);
-     })
-    .catch(err => {
-      console.log(err);
-    });
 
     return (
       <>
