@@ -4,7 +4,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCookies } from 'react-cookie'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { getDatabase, onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 firebase.initializeApp({
     apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -27,9 +27,7 @@ const Panel = () => {
     const query = messageRef.orderBy('createdAt').limit(25);
     const [users] = useCollectionData(query, { idField: 'id' });
     var data = {};
-    const presref = ref(db, 'status');
     var available = false;
-    console.log(users);
 
     const index = users?.findIndex(user => user.uid === auth.currentUser.uid);
     if (index > -1) {
@@ -41,10 +39,9 @@ const Panel = () => {
     } else {
         available = false;
     }
-    const ref = db.ref('status');
-    var data = {};
-    onValue(ref, (snapshot) => {
-      data = snapshot.val();
+    
+    onValue(ref(db, 'status'), (snapshot) => {
+        data = snapshot.val();
     });
 
     return (
