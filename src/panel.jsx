@@ -39,7 +39,7 @@ const Panel = () => {
     } else {
         available = false;
     }
-    
+     
     onValue(ref(db, 'status'), (snapshot) => {
         data = snapshot.val();
     });

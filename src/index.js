@@ -2,23 +2,33 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import firebase from 'firebase/compat/app';
+import GridLoader from 'react-spinners/GridLoader';
 
 const AppWrapper = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 8000)
   }, []);
 
   if (loading) {
-    return null; // Clean loading with no flash
+    return (
+      <div className="loading-container">
+        <GridLoader
+          color={"#F37A24"}
+          loading={loading}
+          size={20}
+          aria-label="Loading"
+          data-testid="loader"
+        />
+        <br />
+        <h1 style={{color: 'white'}}>Did you know: you are reading this</h1>
+      </div>
+    ); // Clean loading with no flash
   }
 
   return (
