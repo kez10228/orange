@@ -114,14 +114,12 @@ const SignIn = () => {
             <input type="text" placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} className="input"/><br />
             <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className="input"/><br />
             <button type='submit'>Log in</button>
-            <p>This is a temporary login page</p>
         </form><br />
         <h1>Sign Up</h1>
         <form onSubmit={signUp}>
             <input type="text" placeholder='Username' value={signusername} onChange={(e) => setsignUsername(e.target.value)} className="input"/><br />
             <input type="password" placeholder='Password' value={signpassword} onChange={(e) => setsignPassword(e.target.value)} className="input"/><br />
             <button type='submit'>Sign Up</button>
-            <p>This is a temporary Signup page</p>
         </form>
     </div>
   )

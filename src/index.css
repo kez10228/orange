@@ -43,11 +43,11 @@
     }
 
     h1 {
-      @apply font-bold text-xl text-black m-2 
+      @apply font-bold text-xl text-white m-2 
     }
 
     button {
-      @apply rounded-md border-2 border-black text-black font-bold py-2 px-4 m-2 w-auto
+      @apply rounded-md border-2 border-black text-black font-bold py-2 px-4 m-2 w-auto bg-white
     }
 
     .panel {
@@ -129,5 +129,13 @@
 
     .loading-container {
       @apply flex items-center justify-center h-screen w-full text-center flex-col bg-gray-600;
+    }
+
+    .sign-in-container {
+      @apply flex flex-col items-center justify-center h-screen w-full text-center flex-col bg-gray-600;
+    }
+
+    .input {
+      @apply pl-4 pr-4 py-2 border-2 border-gray-500 rounded-md
     }
 }
