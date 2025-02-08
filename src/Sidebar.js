@@ -4,6 +4,9 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie'
+import { useState } from "react";
+import Modal from "./components/Modal";
+
 
 firebase.initializeApp({
   apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
@@ -20,26 +23,34 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const channelRef = firestore.collection('channels');
   const query = channelRef.where('members', "array-contains", auth.currentUser.email.slice(0, -20));
   const [channels] = useCollectionData(query, { idField: 'id' });
 
-
   return (
-    <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg">
-        <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
-        <Divider />
-        <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
+    <>
+      {isOpen && <Modal onClose={() => setIsOpen(false)} />}
+      <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg z-50">
+          <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
+          <Divider />
+          <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
 
-          {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
+            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
 
-        <Divider />  
-        <SidebarIcon icon={<FaPlus size="24" />} text="Create a new channel" />  
-        <Divider />
-        <SignOut icon={<FaSignOutAlt size="24" />} text="Sign Out" id="sign-out" />
-    </div>
+          <Divider />  
+          <div className="sidebar-icon group" onClick={() => setIsOpen(true)}>
+            {<FaPlus size="24" />}
+
+            <span className="tooltip group-hover:scale-100">
+                Create a channel
+            </span>
+          </div>
+          <Divider />
+          <SignOut icon={<FaSignOutAlt size="24" />} text="Sign Out" id="sign-out" />
+      </div>
+    </>
   );    
 };
 
@@ -60,18 +71,6 @@ const ChannelIcon = ({ icon, text }) => {
             </span>
         </div>
     );
-}
-
-const SidebarIcon = ({ icon, text }) => {
-  return (
-    <div className="sidebar-icon group">
-      {icon}
-
-      <span className="tooltip group-hover:scale-100">
-          {text}
-      </span>
-    </div>
-  )
 }
 
 const SignOut = ({ icon, text }) => {
