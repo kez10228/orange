@@ -6,6 +6,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie'
 import { useState } from "react";
 import Modal from "./components/Modal";
+import Modal2 from './components/Modal2';
 
 
 firebase.initializeApp({
@@ -25,6 +26,7 @@ const firestore = firebase.firestore();
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal2, setShowModal2] = useState(true);
   const channelRef = firestore.collection('channels');
   const query = channelRef.where('members', "array-contains", auth.currentUser.email.slice(0, -20));
   const [channels] = useCollectionData(query, { idField: 'id' });
@@ -32,6 +34,7 @@ const Sidebar = () => {
   return (
     <>
       {isOpen && <Modal onClose={() => setIsOpen(false)} />}
+      {showModal2 && <Modal2 onClose={() => setShowModal2(false)} />}
       <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg z-50">
           <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
           <Divider />
