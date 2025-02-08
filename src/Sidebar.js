@@ -40,23 +40,22 @@ const Sidebar = () => {
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
 
-            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
+          {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
 
           <Divider />  
           <div className="sidebar-icon group" onClick={() => setIsOpen(true)}>
             {<FaPlus size="24" />}
-
             <span className="tooltip group-hover:scale-100">
                 Create a channel
             </span>
           </div>
+          <div className="flex-grow"></div>
           <Divider />
           <SignOut icon={<FaSignOutAlt size="24" />} text="Sign Out" id="sign-out" />
       </div>
     </>
   );    
 };
-
 
 const ChannelIcon = ({ icon, text }) => {
     const [cookies, setCookie] = useCookies(['channel'])
