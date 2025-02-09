@@ -33,9 +33,7 @@ const AppWrapper = () => {
   }
 
   return (
-    <React.StrictMode>
-      <App initialUser={user} />
-    </React.StrictMode>
+    <App initialUser={user} />
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
 import 'firebase/compat/firestore';
 import oranges from './oranges-in-a-box.jpg';
