@@ -14,15 +14,15 @@ function Modal2({onClose}) {
         </button>
         
         <h1 className='text-3xl font-bold'>THE ORANGE ARMY</h1>
-        <h1 className='text-3xl font-bold'>V2.01</h1>
+        <h1 className='text-3xl font-bold'>V3.00</h1>
 
         <p className='text-center'>This new update includes:</p>
         <ol className='text-center'>
-            <li>New domain: <a href="https://orangearmy.co.uk">orangearmy.co.uk</a></li>
+            <li>Deleted old messages because of the weird "hackers"</li>
             <br />
-            <li>Fancy popups like this one</li>
+            <li>Video chat (still in development)</li>
             <br />
-            <li>That's it, why did I add this last one: IDK</li>
+            <li>Minor bug fixes such as if you name a channel after a user, you can see their private messages</li>
         </ol> 
         <p className='text-center'>And BTW happy valentines on the 14th Feb :)</p>
         <br />

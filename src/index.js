@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import GridLoader from 'react-spinners/GridLoader';
+import { GridLoader, ClockLoader, ClimbingBoxLoader} from 'react-spinners';
 import { Analytics } from "@vercel/analytics/react"
 
 const AppWrapper = () => {
@@ -13,19 +13,34 @@ const AppWrapper = () => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-    }, 5000)
+    }, 3000)
   }, []);
+
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
+
+  const loadingType = () => {
+    if (getRndInteger(1, 3) === 1) {
+      return (
+        <GridLoader color={'#ff6600'} loading={loading} size={15} />
+      );
+    } else if (getRndInteger(1, 3) === 2) {
+      return (
+        <ClockLoader color={'#ff6600'} loading={loading} size={30} />
+      );
+    } else {
+      return (
+        <ClimbingBoxLoader color={'#ff6600'} loading={loading} size={15} />
+      );
+    }
+  }
+  
 
   if (loading) {
     return (
       <div className="loading-container">
-        <GridLoader
-          color={"#F37A24"}
-          loading={loading}
-          size={20}
-          aria-label="Loading"
-          data-testid="loader"
-        />
+        {loadingType()}
         <br />
         <h1 style={{color: 'white'}}>Did you know: you are reading this</h1>
       </div>

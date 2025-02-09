@@ -72,7 +72,7 @@ function ChatRoom() {
             uid,
             name,
             channel: cookie.user && cookie.channel === 'Orange / Private Messages' 
-                ? cookie.user 
+                ? "pm" + cookie.user 
                 : cookie.channel
         };
 
@@ -84,7 +84,7 @@ function ChatRoom() {
     // Query messages based on channel or private chat
     const query = cookie.user && cookie.channel === 'Orange / Private Messages'
         ? messagesRef
-            .where('channel', 'in', [cookie.user, auth.currentUser.email.slice(0, -20)])
+            .where('channel', 'in', ["pm" + cookie.user, "pm" + auth.currentUser.email.slice(0, -20)])
             .where('name', 'in', [auth.currentUser.email.slice(0, -20), cookie.user])
             .orderBy("createdAt")
         : messagesRef
