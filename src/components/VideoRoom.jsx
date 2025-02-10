@@ -22,9 +22,9 @@ function VideoRoom() {
         }
     }
 
-    const toggleCam = () => {
+    const toggleCam = async () => {
         if (localTracks[1]) {
-            localTracks[1].setEnabled(!cam);
+            await localTracks[1].setEnabled(!cam);
             setCam(!cam);
         }
     }
@@ -48,30 +48,39 @@ function VideoRoom() {
     }
 
     useEffect(() => {
+        let tracks;
+        
         client.on('user-published', handleUserJoined);
         client.on('user-left', handleUserLeft);
-
+    
         client
             .join(APP_ID, CHANNEL, TOKEN, null)
             .then((uid) => 
-                Promise.all([AgoraRTC.createMicrophoneAndCameraTracks(), uid])
+                Promise.all([
+                    // Store tracks reference
+                    AgoraRTC.createMicrophoneAndCameraTracks().then(t => {
+                        tracks = t;
+                        return t;
+                    }), 
+                    uid
+                ])
             ).then(([tracks, uid]) => {
                 const [audioTrack, videoTrack] = tracks;
                 setLocalTracks(tracks);
                 setUsers((previousUsers) => [...previousUsers, { uid, videoTrack, audioTrack }]);
                 client.publish(tracks);
             });
-
+    
         return () => {
-            for (let localTrack of localTracks) {
-                localTrack.stop();
-                localTrack.close();
+            if (tracks) {
+                tracks.forEach(track => {
+                    track.stop();
+                    track.close();
+                });
             }
             client.off('user-published', handleUserJoined);
             client.off('user-left', handleUserLeft);
-            client.unpublish(localTracks).then(() => {
-                client.leave();
-            });
+            client.unpublish(tracks).then(() => client.leave());
         };
     }, []);
 
