@@ -4,7 +4,7 @@ import VideoPlayer from './VideoPlayer';
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash } from "react-icons/fa6";
 
 const APP_ID = '8f9b95a3b59b49f0b4965d765e901ad7';
-const TOKEN = '007eJxTYFg94RDLu79LetIS3jr+DZc//efrHrnLT5Yal5pk7o91aMtQYLBIs0yyNE00TjK1TDKxTDMAEmamKeZmpqmWBoaJKeYyc1akNwQyMlz6ocjACIUgPhtDflFiXnoqAwMAbfYizA==';
+const TOKEN = '007eJxTYHArC1tTEXHpReXNM2ekmVg3yDLXu1pM2ui0JC2tsPTlkkMKDBZplkmWponGSaaWSSaWaQZAwsw0xdzMNNXSwDAxxVzcdFV6QyAjA9fKYlZGBggE8dkY8osS89JTGRgAT2oe6A==';
 const CHANNEL = 'orange';
 
 const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
