@@ -24,7 +24,9 @@ function VideoRoom() {
 
     const toggleCam = async () => {
         if (localTracks[1]) {
+            await client.unpublish(localTracks[1]);
             await localTracks[1].setEnabled(!cam);
+            await client.publish(localTracks[1]);
             setCam(!cam);
         }
     }
@@ -48,39 +50,37 @@ function VideoRoom() {
     }
 
     useEffect(() => {
-        let tracks;
+        let mounted = true;
         
-        client.on('user-published', handleUserJoined);
-        client.on('user-left', handleUserLeft);
-    
-        client
-            .join(APP_ID, CHANNEL, TOKEN, null)
-            .then((uid) => 
-                Promise.all([
-                    // Store tracks reference
-                    AgoraRTC.createMicrophoneAndCameraTracks().then(t => {
-                        tracks = t;
-                        return t;
-                    }), 
-                    uid
-                ])
-            ).then(([tracks, uid]) => {
-                const [audioTrack, videoTrack] = tracks;
+        const init = async () => {
+            client.on('user-published', handleUserJoined);
+            client.on('user-left', handleUserLeft);
+
+            const uid = await client.join(APP_ID, CHANNEL, TOKEN, null);
+            const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+            
+            if (mounted) {
                 setLocalTracks(tracks);
-                setUsers((previousUsers) => [...previousUsers, { uid, videoTrack, audioTrack }]);
-                client.publish(tracks);
-            });
-    
-        return () => {
-            if (tracks) {
-                tracks.forEach(track => {
-                    track.stop();
-                    track.close();
-                });
+                setUsers(previousUsers => [...previousUsers, { 
+                    uid, 
+                    videoTrack: tracks[1], 
+                    audioTrack: tracks[0] 
+                }]);
+                await client.publish(tracks);
             }
+        };
+
+        init();
+
+        return () => {
+            mounted = false;
+            localTracks.forEach(track => {
+                track.stop();
+                track.close();
+            });
             client.off('user-published', handleUserJoined);
             client.off('user-left', handleUserLeft);
-            client.unpublish(tracks).then(() => client.leave());
+            client.unpublish(localTracks).then(() => client.leave());
         };
     }, []);
 
