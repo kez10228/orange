@@ -60,7 +60,7 @@
     }
 
     .user {
-      @apply flex flex-row bg-gray-900 z-10 h-14 bottom-0 fixed items-center pl-2 w-full
+      @apply bg-gray-900 z-10 h-14 bottom-0 fixed items-center pl-2 w-full inline-block
     }
 
     .user {
@@ -82,7 +82,7 @@
     }
 
     .online {
-      @apply -translate-x-6 translate-y-7 scale-125 mr-0 pr-0 absolute
+      @apply translate-x-6 translate-y-6 scale-125 mr-0 pr-0 absolute
     }
 
     h2 {
