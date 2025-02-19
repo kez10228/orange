@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
 import 'firebase/compat/firestore';
 import oranges from './oranges-in-a-box.jpg';
-import valentine from './valentine.jpg';
 
 function Modal2({onClose}) {
   const modalRef = useRef();
@@ -24,10 +23,8 @@ function Modal2({onClose}) {
             <br />
             <li>Minor bug fixes such as if you name a channel after a user, you can see their private messages</li>
         </ol> 
-        <p className='text-center'>And BTW happy valentines on the 14th Feb :)</p>
         <br />
         <img src={oranges} alt="oranges in a box" className='w-1/4' />
-        <img src={valentine} alt="oranges in a box" className='w-1/4' />
       </div>
     </div>
   );
