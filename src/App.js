@@ -3,59 +3,34 @@ import Sidebar from "./Sidebar";
 import ContentContainer from "./content-container";  
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/auth';
-import 'firebase/compat/database';
 import Panel from "./panel";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
-
-
-firebase.initializeApp({
-  apiKey: "AIzaSyC2wpd-kO2xT6FqKOoh02BGot2TR6f8_PU",
-  authDomain: "orange-ad7c2.firebaseapp.com",
-  databaseURL: "https://orange-ad7c2-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "orange-ad7c2",
-  storageBucket: "orange-ad7c2.appspot.com",
-  messagingSenderId: "634548881107",
-  appId: "1:634548881107:web:192a3a3f247e25540e3626",
-  measurementId: "G-7V3KZ2C9RQ"
-});
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-const db = firebase.database()
-
-
+import firebase, { auth, firestore, database } from './firebase';
 
 const App = () => {
   const [user] = useAuthState(auth);
   
-  useEffect(() => {
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-  }, []);
+  // Only run the online/offline logic if user exists
+  if (user?.uid) {
+    var userStatusDatabaseRef = database.ref('/status/' + user.uid);
 
-  if (user) {
-    var uid = auth.currentUser.uid;
-    var userStatusDatabaseRef = db.ref('/status/' + uid);
-
-      var isOfflineForDatabase = {
-        state: 'offline',
-        last_changed: firebase.database.ServerValue.TIMESTAMP,
+    var isOfflineForDatabase = {
+      state: 'offline',
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    var isOnlineForDatabase = {
+      state: 'online',
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    firebase.database().ref('.info/connected').on('value', function(snapshot) {
+      if (snapshot.val() === false) {
+          return;
       };
-      var isOnlineForDatabase = {
-        state: 'online',
-        last_changed: firebase.database.ServerValue.TIMESTAMP,
-      };
-      firebase.database().ref('.info/connected').on('value', function(snapshot) {
-        if (snapshot.val() === false) {
-            return;
-        };
-        userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function() {
-            userStatusDatabaseRef.set(isOnlineForDatabase);
-        });
+      userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function() {
+          userStatusDatabaseRef.set(isOnlineForDatabase);
       });
+    });
   }
 
   return (
@@ -78,7 +53,6 @@ const App = () => {
     </Router>
   );
 };
-
 const SignIn = () => {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);

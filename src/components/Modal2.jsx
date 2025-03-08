@@ -21,7 +21,21 @@ function Modal2({onClose}) {
             <br />
             <li>Implimented page navigation (React router dom)</li>
             <br />
-            <li>Minor bug fixes such as if you name a channel after a user, you can see their private messages</li>
+            <li>ERROR in ./src/components/Modal2.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js): Unexpected token, expected "from" (4:13)
+
+  2 | import { FaXmark } from "react-icons/fa6";
+  3 | import 'firebase/compat/firestore';
+4 | import  from './oranges-in-a-box.jpg';
+    |              ^
+  5 |
+
+ERROR in [eslint]
+src\components\Modal2.jsx
+  Line 4:13:  Parsing error: Unexpected token, expected "from" (4:13)
+
+webpack compiled with 2 errors and 1 warning
+</li>
         </ol> 
         <br />
         <img src={oranges} alt="oranges in a box" className='w-1/4' />
