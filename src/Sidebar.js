@@ -39,8 +39,9 @@ const Sidebar = () => {
           <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
-
-          {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
+          <div className="channels">
+            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
+          </div>
 
           <Divider />  
           <div className="sidebar-icon group" onClick={() => setIsOpen(true)}>

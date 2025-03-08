@@ -103,12 +103,12 @@ function ChatRoom() {
         <>
             {showVideo && <VideoChat onClose={() => setShowVideo(false)} />}
             <div className="content-container">
-                <div style={{ height: '100vh', overflowY:'scroll' , overflowX: 'hidden'}}>
+                <div style={{ height: '100vh', overflowY:'scroll' , overflowX: 'hidden'}} className='chatbox'>
                     {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                     <span ref={dummy}></span>
                 </div>
                 <form onSubmit={sendMessage} style={{ overflow: 'hidden', padding: '10px' }}>
-                    <div className='flex flex-row p-3 items-center justify-start'>
+                    <div className='flex flex-row gap-3 items-center justify-start'>
                         <FaCirclePlus size={28} color='white' onClick={() => setShowVideo(true)} />
                         <input 
                             value={formValue} 
@@ -116,7 +116,7 @@ function ChatRoom() {
                             type="text" 
                             ref={register} 
                             className="input_box" 
-                            placeholder="Say something RUDE like SH*T" 
+                            placeholder="Say something NICE for once" 
                         />
                     </div>
                 </form>

@@ -13,13 +13,13 @@ function Modal2({onClose}) {
         </button>
         
         <h1 className='text-3xl font-bold'>THE ORANGE ARMY</h1>
-        <h1 className='text-3xl font-bold'>V3.00</h1>
+        <h1 className='text-3xl font-bold'>V4.00 🥳🥳</h1>
 
         <p className='text-center'>This new update includes:</p>
         <ol className='text-center'>
-            <li>Deleted old messages because of the weird "hackers"</li>
+            <li>Redesigned login and signup pages</li>
             <br />
-            <li>Video chat (still in development)</li>
+            <li>Implimented page navigation (React router dom)</li>
             <br />
             <li>Minor bug fixes such as if you name a channel after a user, you can see their private messages</li>
         </ol> 

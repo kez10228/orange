@@ -8,6 +8,8 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import Panel from "./panel";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 
 
 firebase.initializeApp({
@@ -30,6 +32,10 @@ const db = firebase.database()
 const App = () => {
   const [user] = useAuthState(auth);
   
+  useEffect(() => {
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+  }, []);
+
   if (user) {
     var uid = auth.currentUser.uid;
     var userStatusDatabaseRef = db.ref('/status/' + uid);
@@ -52,36 +58,51 @@ const App = () => {
       });
   }
 
-    return (
-      <>
-      <div>
-        {user ? 
-        <>
-          <Sidebar />
-          <div className="content">
-            <Panel /><ContentContainer />
-          </div>
-        </>
-         : <SignIn />}
-      </div>
-      </>
-      
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/chat" element={
+          user ? (
+            <>
+              <Sidebar />
+              <div className="content">
+                <Panel /><ContentContainer />
+              </div>
+            </>
+          ) : <Navigate to="/signin" />
+        } />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="*" element={<Navigate to={user ? "/chat" : "/signin"} />} />
+      </Routes>
+    </Router>
+  );
 };
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const [user] = useAuthState(auth);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [signusername, setsignUsername] = React.useState('');
-  const [signpassword, setsignPassword] = React.useState('');
+
+  useEffect(() => {
+    if (user) {
+      navigate('/chat');
+    }
+  }, [user, navigate]);
+
   async function signIn(e) {
     e.preventDefault();
     const loginauth = getAuth();
+    
+    // Set persistence before sign in
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    
+    // Then sign in
     signInWithEmailAndPassword(loginauth, username + "@orange.is-great.net", password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(user);
+        navigate('/chat');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -89,40 +110,55 @@ const SignIn = () => {
         console.log(errorCode, errorMessage);
       });
   }
+
+  return (
+    <div className="bg">
+      <div className='sign-in-container'>
+        <h1>Log in</h1>
+        <form onSubmit={signIn}>
+          <input type="text" placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} className="input text-black"/><br />
+          <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className="input text-black"/><br />
+          <button type='submit' className="shadow__btn">Log in</button>
+          <p className="p-0 m-0">Don't have an account? <Link to="/signup" className="text-blue-700">Sign up</Link></p>
+        </form>
+      </div>
+    </div>
+    
+  );
+};const SignUp = () => {
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
   async function signUp(e) {
+    e.preventDefault();
     const messagesRef = firestore.collection('user-info');
 
-    e.preventDefault();
     try {
-      await auth.createUserWithEmailAndPassword(signusername + "@orange.is-great.net", signpassword);
-      console.log(auth.currentUser);
+      await auth.createUserWithEmailAndPassword(username + "@orange.is-great.net", password);
+      await messagesRef.add({
+        username: username,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: auth.currentUser.uid,
+      });
     } catch (error) {
       alert(error);
     }
-
-    await messagesRef.add({
-      username: signusername,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid: auth.currentUser.uid,
-    });
   }
 
   return (
-    <div className='sign-in-container'>
-        <h1>Log in</h1>
-        <form onSubmit={signIn}>
-            <input type="text" placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} className="input"/><br />
-            <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className="input"/><br />
-            <button type='submit'>Log in</button>
-        </form><br />
+    <div className="bg">
+      <div className='sign-in-container'>
         <h1>Sign Up</h1>
         <form onSubmit={signUp}>
-            <input type="text" placeholder='Username' value={signusername} onChange={(e) => setsignUsername(e.target.value)} className="input"/><br />
-            <input type="password" placeholder='Password' value={signpassword} onChange={(e) => setsignPassword(e.target.value)} className="input"/><br />
-            <button type='submit'>Sign Up</button>
+          <input type="text" placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} className="input text-black"/><br />
+          <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className="input text-black"/><br />
+          <button type='submit' className="shadow__btn">Sign Up</button>
+          <p className="p-0 m-0">Already have an account? <Link to="/signin" className="text-blue-700">Sign in</Link></p>
         </form>
+      </div>
     </div>
-  )
-}
+    
+  );
+};
 
 export default App;
