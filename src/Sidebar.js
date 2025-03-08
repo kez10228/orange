@@ -1,4 +1,5 @@
 import { FaFire, FaChild, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaFileCircleExclamation } from "react-icons/fa6";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie'
 import { useState } from "react";
@@ -22,7 +23,7 @@ const Sidebar = () => {
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
           <div className="channels">
-            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFire size="28" />} text={channel.name}  />))}
+            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFileCircleExclamation size="28" />} text={channel.name}  />))}
           </div>
 
           <Divider />  
