@@ -13,7 +13,7 @@ function Modal2({onClose}) {
         </button>
         
         <h1 className='text-3xl font-bold'>THE ORANGE ARMY</h1>
-        <h1 className='text-3xl font-bold'>V4.00 🥳🥳</h1>
+        <h1 className='text-3xl font-bold'>V4.1.1 🥳🥳</h1>
 
         <p className='text-center'>This new update includes:</p>
         <ol className='text-center'>
@@ -22,20 +22,29 @@ function Modal2({onClose}) {
             <li>Implimented page navigation (React router dom)</li>
             <br />
             <li>ERROR in ./src/components/Modal2.jsx
-Module build failed (from ./node_modules/babel-loader/lib/index.js): Unexpected token, expected "from" (4:13)
+              Module build failed (from ./node_modules/babel-loader/lib/index.js): Unexpected token, expected "from" (4:13)
 
-  2 | import { FaXmark } from "react-icons/fa6";
-  3 | import 'firebase/compat/firestore';
-4 | import  from './oranges-in-a-box.jpg';
-    |              ^
-  5 |
+                2 | import { FaXmark } from "react-icons/fa6";
+                3 | import 'firebase/compat/firestore';
+              4 | import  from './oranges-in-a-box.jpg';
+                  |              ^
+                5 |
 
-ERROR in [eslint]
-src\components\Modal2.jsx
-  Line 4:13:  Parsing error: Unexpected token, expected "from" (4:13)
+              ERROR in [eslint]
+              src\components\Modal2.jsx
+                Line 4:13:  Parsing error: Unexpected token, expected "from" (4:13)
 
-webpack compiled with 2 errors and 1 warning
-</li>
+              webpack compiled with 2 errors and 1 warning
+            </li>
+            <li>Context menus! (right click)</li>
+            <br />
+            <li>Made this MORE secure</li>
+            <br />
+            <li>Please press inspect element</li>
+            <br />
+            <li>Please report any bugs to me on discord (ironic)</li>
+            <br />
+            <li>Also user info (Not quite done, check out my aboutme)</li>
         </ol> 
         <br />
         <img src={oranges} alt="oranges in a box" className='w-1/4' />

@@ -11,14 +11,14 @@
 
     .content-container {
       @apply flex flex-col
-    bg-gray-700
+    bg-gray-700 mr-96
       m-0 w-full overflow-y-hidden
       h-screen pl-5 pb-5;
     }
     
     .input_box {
       @apply mt-auto mr-20 rounded-md bg-gray-600 h-10 pl-5 placeholder:text-gray-500
-       text-gray-400 w-auto box-border w-full;
+       text-gray-400 box-border w-full;
     }
 
     .chat-msg {
@@ -70,7 +70,7 @@
     }
 
     .sub-user {
-      @apply text-gray-400 flex flex-col w-full -translate-x-4
+      @apply text-gray-400 flex flex-col w-full translate-x-2
     }
 
     .sub-text {
@@ -199,4 +199,11 @@
                   0 0 50px rgb(0,140,255),
                   0 0 100px rgb(0,140,255);
     }
+
+    * {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
   }

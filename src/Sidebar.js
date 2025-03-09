@@ -1,4 +1,4 @@
-import { FaFire, FaChild, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaChild, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import { FaFileCircleExclamation } from "react-icons/fa6";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie'
@@ -6,6 +6,7 @@ import { useState } from "react";
 import Modal from "./components/Modal";
 import Modal2 from './components/Modal2';
 import { auth, firestore } from './firebase';
+import { GiOrange } from "react-icons/gi";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ const Sidebar = () => {
       {isOpen && <Modal onClose={() => setIsOpen(false)} />}
       {showModal2 && <Modal2 onClose={() => setShowModal2(false)} />}
       <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg z-50">
-          <ChannelIcon icon={<FaFire size="28" />} text="Orange / Private Messages" />
+          <ChannelIcon icon={<GiOrange size="28" />} text="Orange / Private Messages" />
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
           <div className="channels">

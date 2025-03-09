@@ -2,11 +2,15 @@ import user from './OIG4.jpg';
 import { useCookies } from 'react-cookie';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { getDatabase, ref, onValue } from "firebase/database";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from './firebase';
+import ContextMenu from './components/contextMenu/contextMenu';
+import UserInfo from './components/userInfo/userInfo';
 
-// Separate UserIndicator component into its own file
-const UserIndicator = ({ text, state }) => {
+let userinfoname = "";
+let statusinfo = "";
+
+const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserOpened }) => {
     const [cookies, setCookies] = useCookies(['channel', 'user']);
     
     const onlinePresence = (
@@ -35,8 +39,43 @@ const UserIndicator = ({ text, state }) => {
         </svg>
     );
 
+    const handleContextMenu = (e, rightClickedText) => {
+        e.preventDefault();
+
+        const contextMenuAttr = contextMenuRef.current.getBoundingClientRect();
+        const isLeft = e.clientX < window?.innerWidth / 2
+
+        let x
+        let y = e.clientY;
+
+        if (isLeft) {
+            x = e.clientX;
+        } else {
+            x = e.clientX - contextMenuAttr.width;
+        }
+
+        setContextMenu({
+            toggled: true,
+            position: {
+                x,
+                y
+            }
+        });
+
+        console.log(contextMenuAttr);
+
+        console.log(rightClickedText);
+    };
+
+    const handleClicked = () => {
+        setIsUserOpened(true);
+        setCookies('user', text);
+        userinfoname = text;
+        statusinfo = state;
+    }
+
     return (
-        <div className="userContainer" onClick={() => setCookies('user', text)}>
+        <div className="userContainer" onClick={() => handleClicked()} onContextMenu={(e) => handleContextMenu(e, text)}>
             <img src={user} alt="pfp" className='pfp' />
             <p className="username">{text}</p>
             {state === "online" ? onlinePresence : offlinePresence}
@@ -51,6 +90,46 @@ const Panel = () => {
     const query = messageRef.orderBy('createdAt').limit(25);
     const [users] = useCollectionData(query, { idField: 'id' });
     const [statusData, setStatusData] = useState({});
+    const [isUserOpened, setIsUserOpened] = useState(false);
+    const contextMenuRef = useRef(null);
+    useEffect(() => {
+        const disableContextMenu = (e) => {
+            e.preventDefault();
+        };
+        
+        document.addEventListener('contextmenu', disableContextMenu);
+        
+        return () => {
+            document.removeEventListener('contextmenu', disableContextMenu);
+        };
+    }, []);
+    useEffect(() => {
+        const handleClickAway = (event) => {
+            if (contextMenuRef.current && !contextMenuRef.current.contains(event.target)) {
+                setContextMenu(prev => ({
+                    ...prev,
+                    toggled: false
+                }));
+            }
+        };
+    
+        document.addEventListener('mousedown', handleClickAway);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickAway);
+        };
+    }, []);
+    
+    
+    
+    
+    const [contextMenu, setContextMenu] = useState({
+        position: {
+            x: 0,
+            y: 0,
+        },
+        toggled: false
+    });
 
     useEffect(() => {
         const statusRef = ref(db, 'status');
@@ -65,8 +144,9 @@ const Panel = () => {
     const displayName = currentUsername.charAt(0).toUpperCase() + currentUsername.slice(1);
 
     return (
+        <>
         <div className="panel">
-            <h2>{cookies.channel}</h2>
+            <h2 className='font-bold text-lg my-5'>{cookies.channel}</h2>
             <hr />
             <div className="panel-header">
                 {isAvailable && filteredUsers?.map(user => (
@@ -74,6 +154,9 @@ const Panel = () => {
                         state={statusData[user.uid]?.state || 'offline'} 
                         key={user.id} 
                         text={user.username}
+                        contextMenuRef={contextMenuRef}
+                        setContextMenu={setContextMenu}
+                        setIsUserOpened={setIsUserOpened}
                     />
                 ))}
             </div>
@@ -100,7 +183,48 @@ const Panel = () => {
                     </div>
                 </div>
             </div>
+            <ContextMenu 
+                contextMenuRef={contextMenuRef}
+                isToggled={contextMenu.toggled && contextMenu.position.x !== 0 && contextMenu.position.y !== 0}
+                positionX={contextMenu.position.x}
+                positionY={contextMenu.position.y}
+                buttons={[
+                    {
+                        text: "Send Message",
+                        icon: "✉️",
+                        onClick: () => console.log("Opening DM"),
+                        isSpacer: false
+                    },
+                    {
+                        text: "View Profile",
+                        icon: "👤",
+                        onClick: () => console.log("View Profile"),
+                        isSpacer: false
+                    },
+                    {
+                        text: "",
+                        icon: "",
+                        isSpacer: true
+                    },
+                    {
+                        text: "Block",
+                        icon: "🚫",
+                        onClick: () => console.log("Block"),
+                        isSpacer: false
+                    },
+                    {
+                        text: "Report",
+                        icon: "⚠️",
+                        onClick: () => console.log("Report"),
+                        isSpacer: false
+                    }
+                ]}
+            />
+            
         </div>
+        {isUserOpened && <UserInfo username={userinfoname} status={statusinfo} />}
+        {!isUserOpened &&  <UserInfo notFound={true} />}
+        </>
     );
 };
 
