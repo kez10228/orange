@@ -41,10 +41,24 @@ function UserInfo({username, status, notFound}) {
     }
   });
   createdAt = createdAt?.toDate()
+  let text = "Lorem 
+                ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
+                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+                deserunt mollit anim id est laborum.";
   let special = false;
+  let bean = false;
   if (username === "orange" || username === "test") {
     special = true;
+    text = "This is a special user (creator of website). His pronouns are depre/ssed and his pet 
+                is called depression. BTW I need money donate please.";
   }
+  if (username === "bean") {
+    bean = true;
+    text = "BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN "
+  }
+  
   if (notFound) {
     return (
       <div className='userInfo bg-gray-700'></div>
@@ -61,14 +75,7 @@ function UserInfo({username, status, notFound}) {
           <div className="aboutme">
             <div className="aboutbox">
               <p className='font-bold'>About me</p>
-              {special ? <p>This is a special user (creator of website). His pronouns are depre/ssed and his pet 
-                is called depression. BTW I need money donate please.</p> : <p>Lorem 
-                ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
-                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum.</p>
-              }
+              <p>{text}</p>
             </div>
             <hr />
             <p>Joined At: {createdAt?.toLocaleString('en-UK', { timeZoneName: 'short' })}</p>
