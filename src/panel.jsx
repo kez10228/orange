@@ -7,8 +7,8 @@ import { auth, firestore } from './firebase';
 import ContextMenu from './components/contextMenu/contextMenu';
 import UserInfo from './components/userInfo/userInfo';
 
-let userinfoname = "";
-let statusinfo = "";
+let userinfoname = "orange";
+let statusinfo = "online";
 
 const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserOpened }) => {
     const [cookies, setCookies] = useCookies(['channel', 'user']);
@@ -90,7 +90,7 @@ const Panel = () => {
     const query = messageRef.orderBy('createdAt').limit(25);
     const [users] = useCollectionData(query, { idField: 'id' });
     const [statusData, setStatusData] = useState({});
-    const [isUserOpened, setIsUserOpened] = useState(false);
+    const [isUserOpened, setIsUserOpened] = useState(true);
     const contextMenuRef = useRef(null);
     useEffect(() => {
         const disableContextMenu = (e) => {
@@ -223,7 +223,6 @@ const Panel = () => {
             
         </div>
         {isUserOpened && <UserInfo username={userinfoname} status={statusinfo} />}
-        {!isUserOpened &&  <UserInfo notFound={true} />}
         </>
     );
 };

@@ -41,21 +41,12 @@ function UserInfo({username, status, notFound}) {
     }
   });
   createdAt = createdAt?.toDate()
-  let text = "Lorem 
-                ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
-                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum.";
-  let special = false;
-  let bean = false;
+  let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  
   if (username === "orange" || username === "test") {
-    special = true;
-    text = "This is a special user (creator of website). His pronouns are depre/ssed and his pet 
-                is called depression. BTW I need money donate please.";
+    text = "This is a special user (creator of website). His pronouns are depre/ssed and his pet is called depression. BTW I need money donate please.";
   }
   if (username === "bean") {
-    bean = true;
     text = "BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN "
   }
   
@@ -67,7 +58,7 @@ function UserInfo({username, status, notFound}) {
     return (
       <div className='userInfo'>
         {/* From UIVERSE.COM by catraco */}
-        <div class="container"></div>
+        <div className="container"></div>
           <img src={pfp} alt="pfp" className='pfp-userInfo' />
           <p className='username-info'>{username}</p>
           <p className='status-info'>{status}</p>
