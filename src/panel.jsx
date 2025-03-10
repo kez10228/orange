@@ -1,11 +1,13 @@
 import user from './OIG4.jpg';
 import { useCookies } from 'react-cookie';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { FaGear } from "react-icons/fa6";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from './firebase';
 import ContextMenu from './components/contextMenu/contextMenu';
 import UserInfo from './components/userInfo/userInfo';
+import Settings from './components/settings.jsx'
 
 let userinfoname = "orange";
 let statusinfo = "online";
@@ -142,6 +144,7 @@ const Panel = () => {
     const isAvailable = cookies.channel === "Orange / Private Messages";
     const currentUsername = auth.currentUser.email.slice(0, -20);
     const displayName = currentUsername.charAt(0).toUpperCase() + currentUsername.slice(1);
+    const [showSettings, setShowSettings] = useState(false)
 
     return (
         <>
@@ -181,6 +184,10 @@ const Panel = () => {
                         <p className='pointer-events-none'>{displayName}</p>
                         <p className='sub-text pointer-events-none'>Online</p>
                     </div>
+                    <button className='border-none w-fit h-fit' onClick={() => setShowSettings(true)}>
+                        <FaGear color='white' size={20} className='self-center m-3'/>
+                    </button>
+                    {showSettings && <Settings onClose={() => setShowSettings(false)} />}
                 </div>
             </div>
             <ContextMenu 
@@ -223,6 +230,7 @@ const Panel = () => {
             
         </div>
         {isUserOpened && <UserInfo username={userinfoname} status={statusinfo} />}
+
         </>
     );
 };
