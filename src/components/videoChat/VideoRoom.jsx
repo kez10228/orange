@@ -82,7 +82,7 @@ function VideoRoom() {
             client.off('user-left', handleUserLeft);
             client.unpublish(localTracks).then(() => client.leave());
         };
-    }, []);
+    });
 
     return (
         <div className='flex flex-col items-center justify-center gap-4'>

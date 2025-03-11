@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie';
-import { useIsTyping } from 'use-is-typing';
 import { FaCirclePlus } from "react-icons/fa6";
-import VideoChat from './components/Video';
-import user from './OIG4.jpg';
+import VideoChat from './components/videoChat/Video';
+import user from './assets/img/OIG4.jpg';
 import firebase, { auth, firestore } from './firebase';
 
 // Chat message component
@@ -25,7 +24,6 @@ function ChatMessage({ message }) {
 // Chat room component
 function ChatRoom() {
     const [showVideo, setShowVideo] = useState(false);
-    const [isTyping, register] = useIsTyping();
     const [cookie, setCookie] = useCookies(['channel', 'user']);
     const [formValue, setFormValue] = useState('');
     const dummy = useRef();
@@ -96,7 +94,6 @@ function ChatRoom() {
                             value={formValue} 
                             onChange={(e) => setFormValue(e.target.value)} 
                             type="text" 
-                            ref={register} 
                             className="input_box" 
                             placeholder="Say something NICE for once" 
                         />

@@ -6,7 +6,7 @@ const VideoPlayer = ({user, style}) => {
 
     useEffect(() => {
         user.videoTrack.play(ref.current);
-    }, [])
+    })
 
     return (
         <div>

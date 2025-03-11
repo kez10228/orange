@@ -168,7 +168,7 @@
     }
 
     .bg {
-      @apply h-screen w-full bg-gray-600 items-center justify-center flex bg-[url(oranges.jpg)]
+      @apply h-screen w-full bg-gray-600 items-center justify-center flex bg-[url(assets/img/oranges.jpg)]
     }
 
     .channels {
