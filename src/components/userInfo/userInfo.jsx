@@ -49,6 +49,9 @@ function UserInfo({username, status, notFound}) {
   if (username === "bean") {
     text = "BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN BEAN "
   }
+  if (username === "kura") {
+    text = "Crazy person that needs therapy, stole Kevin's pet depression..."
+  }
   
   if (notFound) {
     return (
