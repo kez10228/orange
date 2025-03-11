@@ -7,7 +7,7 @@ import Panel from "./panel";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
 import firebase, { auth, firestore, database } from './firebase';
-import ContextMenu from "./components/contextMenu2";
+import ContextMenu from "./components/contextMenu/contextMenu2";
 
 const App = () => {
   const [user] = useAuthState(auth);

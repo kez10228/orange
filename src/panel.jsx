@@ -1,4 +1,4 @@
-import user from './OIG4.jpg';
+import user from './assets/img/OIG4.jpg';
 import { useCookies } from 'react-cookie';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { FaGear } from "react-icons/fa6";
