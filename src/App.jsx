@@ -6,7 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Panel from "./panel";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
-import firebase, { auth, firestore, database } from './firebase';
+import firebase, { auth, firestore, database } from './config/firebase';
 import ContextMenu from "./components/contextMenu/contextMenu2";
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
   }
 
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/chat" element={
           user ? (
@@ -55,17 +55,17 @@ const App = () => {
     </Router>
   );
 };
+
 const SignIn = () => {
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   useEffect(() => {
-    if (user) {
+    if (auth.currentUser) {
       navigate('/chat');
     }
-  }, [user, navigate]);
+  }, [navigate]);
 
   async function signIn(e) {
     e.preventDefault();
@@ -77,7 +77,6 @@ const SignIn = () => {
     // Then sign in
     signInWithEmailAndPassword(loginauth, username + "@orange.is-great.net", password)
       .then((userCredential) => {
-        const user = userCredential.user;
         navigate('/chat');
       })
       .catch((error) => {
@@ -99,9 +98,10 @@ const SignIn = () => {
         </form>
       </div>
     </div>
-    
   );
-};const SignUp = () => {
+};
+
+const SignUp = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 

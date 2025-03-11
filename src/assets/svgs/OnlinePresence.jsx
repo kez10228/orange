@@ -1,4 +1,4 @@
-const OnlinePresence = (onlineClassName) => {
+const OnlinePresence = ({onlineClassName}) => {
     return (
         <svg y={17} width={25} height={15} className={onlineClassName} viewBox="0 0 25 15">
             <mask id=":r3:">

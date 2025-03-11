@@ -1,11 +1,11 @@
 import { FaChild, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import { FaFileCircleExclamation } from "react-icons/fa6";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { useCookies } from 'react-cookie'
-import { useState } from "react";
-import Modal from "./components/Modal";
-import Modal2 from './components/Modal2';
-import { auth, firestore } from './firebase';
+import { useCookies } from 'react-cookie';
+import { useState, useEffect } from "react";
+import Modal from "./components/modals/Modal";
+import Modal2 from './components/modals/Modal2';
+import { auth, firestore } from './config/firebase';
 import { GiOrange } from "react-icons/gi";
 
 const Sidebar = () => {
@@ -24,7 +24,7 @@ const Sidebar = () => {
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
           <div className="channels">
-            {channels && channels.map((channel) => (<ChannelIcon key={channel.id} icon={<FaFileCircleExclamation size="28" />} text={channel.name}  />))}
+            {channels && channels.map((channel) => (<ChannelIcon key={channel.name} icon={<FaFileCircleExclamation size="28" />} text={channel.name}  />))}
           </div>
 
           <Divider />  
@@ -43,14 +43,14 @@ const Sidebar = () => {
 };
 
 const ChannelIcon = ({ icon, text }) => {
-    const [cookies, setCookie] = useCookies(['channel'])
+    const [, setCookie] = useCookies(['channel']);
 
-    const cookieSetter = (text) => () => {
+    useEffect(() => {
         setCookie('channel', text, { path: '/' });
-    }
+    }, [text, setCookie]);
 
     return (
-        <div className="sidebar-icon group" onClick={cookieSetter(text)}>
+        <div className="sidebar-icon group">
             {icon}
 
             <span className="tooltip group-hover:scale-100">
@@ -73,6 +73,5 @@ const SignOut = ({ icon, text }) => {
 }
 
 const Divider = () => <hr className="sidebar-hr" />;
-
 
 export default Sidebar;

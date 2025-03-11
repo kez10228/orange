@@ -4,25 +4,23 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { FaGear } from "react-icons/fa6";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useState, useEffect, useRef } from 'react';
-import { auth, firestore } from './firebase';
+import { auth, firestore } from './config/firebase.js';
 import ContextMenu from './components/contextMenu/contextMenu';
 import UserInfo from './components/userInfo/userInfo';
 import Settings from './components/settings/settings.jsx'
-import OnlinePresence from './components/onlinePresence/onlinePresence';
-import OfflinePresence from './components/offlinePresence/offlinePresence';
+import OnlinePresence from './assets/svgs/OnlinePresence.jsx';
+import OfflinePresence from './assets/svgs/OfflinePresence.jsx';
 
 let userinfoname = "orange";
 let statusinfo = "online";
 
 const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserOpened }) => {
-    const [cookies, setCookies] = useCookies(['channel', 'user']);
-    
     const onlinePresence = (
         <OnlinePresence onlineClassName="online2" />
     );
 
     const offlinePresence = (
-        <OfflinePresence />
+        <OfflinePresence offlineClassName="offline"/>
     );
 
     const handleContextMenu = (e, rightClickedText) => {
@@ -55,7 +53,6 @@ const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserO
 
     const handleClicked = () => {
         setIsUserOpened(true);
-        setCookies('user', text);
         userinfoname = text;
         statusinfo = state;
     }
@@ -108,7 +105,6 @@ const Panel = () => {
     
     
     
-    
     const [contextMenu, setContextMenu] = useState({
         position: {
             x: 0,
@@ -139,7 +135,7 @@ const Panel = () => {
                 {isAvailable && filteredUsers?.map(user => (
                     <UserIndicator 
                         state={statusData[user.uid]?.state || 'offline'} 
-                        key={user.id} 
+                        key={user.uid} 
                         text={user.username}
                         contextMenuRef={contextMenuRef}
                         setContextMenu={setContextMenu}
@@ -150,7 +146,7 @@ const Panel = () => {
             <div className="user">
                 <div className='flex flex-row mt-2'>
                     <img src={user} alt="pfp" className='pfp' />
-                    <OnlineUserPresence />
+                    <OnlinePresence onlineClassName='online' />
                     <div className="sub-user">
                         <p className='pointer-events-none'>{displayName}</p>
                         <p className='sub-text pointer-events-none'>Online</p>

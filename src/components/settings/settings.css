@@ -25,6 +25,12 @@
         @apply w-full rounded-t-2xl
     }
     .profile-border {
-        @apply border-2 rounded-2xl w-[25vw] border-none h-[40vh] bg-gray-900
+        @apply border-2 rounded-2xl w-[30vw] border-none h-fit bg-gray-900 gap-3
+    }
+    .online-settings {
+        @apply -translate-y-12 translate-x-14 scale-125
+    }
+    .settings-about-me {
+        @apply translate-x-4 pr-4 pb-4
     }
 }

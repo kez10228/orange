@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaXmark, FaPenToSquare, FaCirclePlus, FaCircleMinus } from "react-icons/fa6";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Timestamp } from "firebase/firestore"; 
-import { firestore } from './firebase';
+import { firestore } from '../../config/firebase';
 
 const db = firestore;
 

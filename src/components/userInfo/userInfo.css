@@ -30,7 +30,7 @@
     }      
 
     .username-info {
-        @apply translate-x-4 font-bold text-xl -translate-y-7
+        @apply translate-x-4 font-bold text-xl -translate-y-7 pointer-events-none
     }
 
     .status-info {

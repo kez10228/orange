@@ -1,11 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { FaXmark } from "react-icons/fa6";
+import pfp from '../../assets/img/OIG4.jpg';
 import 'firebase/compat/firestore';
 import './settings.css';
+import OnlinePresence from '../../assets/svgs/OnlinePresence';
+import { auth } from '../../config/firebase';
 
 function Settings({onClose}) {
   const modalRef = useRef();
   const [settingNo, setSettingNo] = useState(1);
+  const currentUsername = auth.currentUser.email.slice(0, -20);
+
   let setting;
   if (settingNo === 1) {
     setting = 
@@ -14,8 +19,17 @@ function Settings({onClose}) {
       <div className="profile-border">
         {/* From UIVERSE.COM by catraco */}
         <div className="container setting-pattern-1"></div>
+        <img src={pfp} alt="pfp" className='pfp-userInfo'/>
+        <OnlinePresence onlineClassName="online-settings" />
+        <div className='-translate-y-3'>
+          <p className='username-info'>{currentUsername}</p>
+          <p className='status-info'>Online</p>
+        </div>
+        <div className='settings-about-me'>
+          <p className='font-bold'>About me</p>
+          <p>test1234 beanz beanz za magic fruit, the more you eat, the more you toot ahheahehehaheh</p>
+        </div>
       </div>
-      
     </div>
   }
   return (

@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { FaCirclePlus } from "react-icons/fa6";
 import VideoChat from './components/videoChat/Video';
 import user from './assets/img/OIG4.jpg';
-import firebase, { auth, firestore } from './firebase';
+import firebase, { auth, firestore } from './config/firebase';
 
 // Chat message component
 function ChatMessage({ message }) {
@@ -84,7 +84,7 @@ function ChatRoom() {
             {showVideo && <VideoChat onClose={() => setShowVideo(false)} />}
             <div className="content-container">
                 <div style={{ height: '100vh', overflowY:'scroll' , overflowX: 'hidden'}} className='chatbox'>
-                    {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                    {messages && messages.map((msg, index) => <ChatMessage key={`${msg.id}-${index}`} message={msg} />)}
                     <span ref={dummy}></span>
                 </div>
                 <form onSubmit={sendMessage} style={{ overflow: 'hidden', padding: '10px' }}>
