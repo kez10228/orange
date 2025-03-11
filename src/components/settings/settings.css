@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .settings-container {
+        @apply flex flex-col items-center justify-center w-[35vw] h-full bg-gray-800 min-w-60;
+    }
+    .main-settings {
+        @apply flex flex-col w-[35%] place-self-end h-full bg-gray-800 pt-5 px-3;
+    }
+    .setting-heading {
+        @apply text-gray-400 text-xs font-extrabold tracking-wide pointer-events-none;
+    }
+    .setting {
+        @apply border-none outline-none bg-gray-800 text-gray-400 text-sm tracking-wide py-2 px-3 text-left my-2 hover:bg-gray-600
+    }
+    .setting-title {
+        @apply text-white text-2xl font-bold pointer-events-none mb-8;
+    }
+    .settings-box {
+        @apply flex flex-row ml-9 mt-16 h-screen;
+    }
+    .setting-pattern-1 {
+        @apply w-full rounded-t-2xl
+    }
+    .profile-border {
+        @apply border-2 rounded-2xl w-[25vw] border-none h-[40vh] bg-gray-900
+    }
+}

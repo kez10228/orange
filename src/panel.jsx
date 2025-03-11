@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from './firebase';
 import ContextMenu from './components/contextMenu/contextMenu';
 import UserInfo from './components/userInfo/userInfo';
-import Settings from './components/settings.jsx'
+import Settings from './components/settings/settings.jsx'
 
 let userinfoname = "orange";
 let statusinfo = "online";
