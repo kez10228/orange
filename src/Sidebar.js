@@ -2,7 +2,7 @@ import { FaChild, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import { FaFileCircleExclamation } from "react-icons/fa6";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "./components/modals/Modal";
 import Modal2 from './components/modals/Modal2';
 import { auth, firestore } from './config/firebase';
@@ -45,12 +45,12 @@ const Sidebar = () => {
 const ChannelIcon = ({ icon, text }) => {
     const [, setCookie] = useCookies(['channel']);
 
-    useEffect(() => {
-        setCookie('channel', text, { path: '/' });
-    }, [text, setCookie]);
+    const cookieSetter = (text) => () => {
+      setCookie('channel', text, { path: '/' });
+    } 
 
     return (
-        <div className="sidebar-icon group">
+        <div className="sidebar-icon group" onClick={cookieSetter(text)}>
             {icon}
 
             <span className="tooltip group-hover:scale-100">
