@@ -76,7 +76,7 @@ const SignIn = () => {
     
     // Then sign in
     signInWithEmailAndPassword(loginauth, username + "@orange.is-great.net", password)
-      .then((userCredential) => {
+      .then(() => {
         navigate('/chat');
       })
       .catch((error) => {
