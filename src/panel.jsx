@@ -11,10 +11,7 @@ import Settings from './components/settings/settings.jsx'
 import OnlinePresence from './assets/svgs/OnlinePresence.jsx';
 import OfflinePresence from './assets/svgs/OfflinePresence.jsx';
 
-let userinfoname = "orange";
-let statusinfo = "online";
-
-const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserOpened }) => {
+const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserOpened, handleClicked }) => {
     const onlinePresence = (
         <OnlinePresence onlineClassName="online2" />
     );
@@ -51,14 +48,8 @@ const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserO
         console.log(rightClickedText);
     };
 
-    const handleClicked = () => {
-        setIsUserOpened(true);
-        userinfoname = text;
-        statusinfo = state;
-    }
-
     return (
-        <div className="userContainer" onClick={() => handleClicked()} onContextMenu={(e) => handleContextMenu(e, text)}>
+        <div className="userContainer" onClick={() => handleClicked(text, state)} onContextMenu={(e) => handleContextMenu(e, text)}>
             <img src={user} alt="pfp" className='pfp' />
             <p className="username">{text}</p>
             {state === "online" ? onlinePresence : offlinePresence}
@@ -68,12 +59,18 @@ const UserIndicator = ({ text, state, contextMenuRef, setContextMenu, setIsUserO
 
 const Panel = () => {
     const db = getDatabase();
-    const [cookies] = useCookies(['channel', 'user']);
+    const [cookies, setCookies] = useCookies(['channel', 'user']);
     const messageRef = firestore.collection('user-info');
     const query = messageRef.orderBy('createdAt').limit(25);
     const [users] = useCollectionData(query, { idField: 'id' });
     const [statusData, setStatusData] = useState({});
     const [isUserOpened, setIsUserOpened] = useState(true);
+    const [userInfo, setUserInfo] = useState({
+        username: "orange",
+        status: "online",
+        createdAt: "8 February 2025 at 12:25:10 UTC", // Assuming the default user joined at the current date
+        about: "This is a special user (creator of website). His pronouns are depre/ssed and his pet is called depression. BTW I need money donate please."
+    });
     const contextMenuRef = useRef(null);
     useEffect(() => {
         const disableContextMenu = (e) => {
@@ -120,6 +117,24 @@ const Panel = () => {
         });
     }, [db]);
 
+    const handleClicked = async (username, state) => {
+        setIsUserOpened(true);
+        setCookies('user', username);
+
+        const userDoc = await firestore.collection('user-info').where('username', '==', username).get();
+        if (!userDoc.empty) {
+            const userData = userDoc.docs[0].data();
+            setUserInfo({
+                username: userData.username,
+                status: state,
+                createdAt: userData.createdAt.toDate(),
+                about: userData.about || "No additional information provided."
+            });
+        } else {
+            setUserInfo(null);
+        }
+    };
+
     const filteredUsers = users?.filter(user => user.uid !== auth.currentUser.uid);
     const isAvailable = cookies.channel === "Orange / Private Messages";
     const currentUsername = auth.currentUser.email.slice(0, -20);
@@ -140,6 +155,7 @@ const Panel = () => {
                         contextMenuRef={contextMenuRef}
                         setContextMenu={setContextMenu}
                         setIsUserOpened={setIsUserOpened}
+                        handleClicked={handleClicked}
                     />
                 ))}
             </div>
@@ -196,7 +212,7 @@ const Panel = () => {
             />
             
         </div>
-        {isUserOpened && <UserInfo username={userinfoname} status={statusinfo} />}
+        {isUserOpened && userInfo && <UserInfo userInfo={userInfo} />}
 
         </>
     );

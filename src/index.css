@@ -200,10 +200,4 @@
                   0 0 100px rgb(0,140,255);
     }
 
-    * {
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    
   }

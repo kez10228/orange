@@ -3,18 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { GridLoader, ClockLoader, ClimbingBoxLoader} from 'react-spinners';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const AppWrapper = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user] = useState(null);
 
-  useEffect(() => {
-    setLoading(true)
+  function onChange() {
     setTimeout(() => {
-      setLoading(false)
-    }, 3000)
-  }, []);
-
+      setLoading(false);
+    }, 1000);
+  }
+  
   function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
@@ -42,6 +42,13 @@ const AppWrapper = () => {
         {loadingType()}
         <br />
         <h1 style={{color: 'white'}}>Did you know: you are reading this</h1>
+        <h1>Hee hee you have to do captcha now :)</h1>
+        <br />
+        <ReCAPTCHA 
+          sitekey="6Ldw8P8qAAAAAFuXqeAcGlLUsjsFckZeQZRsPpCt"
+          onChange={() => onChange()}
+          size="normal"
+        />
       </div>
     ); // Clean loading with no flash
   }
