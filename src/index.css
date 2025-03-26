@@ -11,7 +11,7 @@
 
     .content-container {
       @apply flex flex-col
-    bg-gray-700 mr-96
+    bg-gray-700 pr-96
       m-0 w-full overflow-y-hidden
       h-screen pl-5 pb-5;
     }
@@ -30,7 +30,9 @@
     }
 
     .msg-content {
-      @apply flex flex-col
+      @apply flex flex-col;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .name {

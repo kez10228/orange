@@ -11,11 +11,14 @@ function ChatMessage({ message }) {
     const { text, name } = message;
     
     return (
-        <div className="chat-msg">
+        <div className="chat-msg w-full">
             <img src={user} alt="pfp" className='pfp' />
-            <div className="msg-content">
-                <p className="name">{name}</p>
-                <p>{text}</p>
+            <div 
+                className="msg-content break-words" 
+                style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', maxWidth: '90%' }} // Restrict width
+            >
+                <p className="name" style={{ fontWeight: 'bold' }}>{name}</p>
+                <p style={{ margin: 0 }} className='w-full'>{text}</p> {/* Remove unnecessary classes */}
             </div>
         </div>
     );
@@ -27,7 +30,8 @@ function ChatRoom() {
     const [cookie, setCookie] = useCookies(['channel', 'user']);
     const [formValue, setFormValue] = useState('');
     const dummy = useRef();
-    const messagesRef = firestore.collection('messages');
+    const messagesRef = firestore.collection('messages'); // Reference to the collection
+    const messagesQuery = messagesRef.limit(100); // Query for fetching messages
 
     // Set default channel if not exists
     if (!cookie.channel || cookie.channel === '') {
@@ -46,28 +50,36 @@ function ChatRoom() {
             return;
         }
 
-        const messageData = {
-            text: formValue,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            uid,
-            name,
-            channel: cookie.user && cookie.channel === 'Orange / Private Messages' 
-                ? "pm" + cookie.user 
-                : cookie.channel
-        };
+        const channel = cookie.user && cookie.channel === 'Orange / Private Messages' 
+            ? "pm" + cookie.user 
+            : cookie.channel;
 
-        await messagesRef.add(messageData);
+        // Split the message into chunks of 200 characters, max 3 messages
+        const chunks = formValue.match(/.{1,200}/g).slice(0, 3);
+
+        for (const chunk of chunks) {
+            const messageData = {
+                text: chunk,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                uid,
+                name,
+                channel
+            };
+
+            await messagesRef.add(messageData); // Use the collection reference to add a message
+        }
+
         setFormValue('');
         dummy.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Query messages based on channel or private chat
     const query = cookie.user && cookie.channel === 'Orange / Private Messages'
-        ? messagesRef
+        ? messagesQuery
             .where('channel', 'in', ["pm" + cookie.user, "pm" + auth.currentUser.email.slice(0, -20)])
             .where('name', 'in', [auth.currentUser.email.slice(0, -20), cookie.user])
             .orderBy("createdAt")
-        : messagesRef
+        : messagesQuery
             .where('channel', '==', decodeURI(cookie.channel))
             .orderBy("createdAt");
 
@@ -75,7 +87,7 @@ function ChatRoom() {
 
     React.useEffect(() => {
         if (dummy.current) {
-            dummy.current.scrollIntoView({ behavior: 'smooth' });
+            dummy.current.scrollIntoView({ behavior: 'instant' });
         }
     }, [messages]);
 
