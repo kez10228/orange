@@ -35,7 +35,7 @@ function ChatRoom() {
 
     // Set default channel if not exists
     if (!cookie.channel || cookie.channel === '') {
-        setCookie('channel', 'Orange / Private Messages', { path: '/' });
+        setCookie('channel', 'Bean / Private Messages', { path: '/' });
     }
 
     const sendMessage = async (e) => {
@@ -45,12 +45,12 @@ function ChatRoom() {
         const { uid } = auth.currentUser;
         const name = auth.currentUser.email.slice(0, -20);
 
-        if (cookie.channel === 'Orange / Private Messages' && !cookie.user) {
+        if (cookie.channel === 'Bean / Private Messages' && !cookie.user) {
             alert('Please select a user to send a message to!');
             return;
         }
 
-        const channel = cookie.user && cookie.channel === 'Orange / Private Messages' 
+        const channel = cookie.user && cookie.channel === 'Bean / Private Messages' 
             ? "pm" + cookie.user 
             : cookie.channel;
 
@@ -74,7 +74,7 @@ function ChatRoom() {
     }
 
     // Query messages based on channel or private chat
-    const query = cookie.user && cookie.channel === 'Orange / Private Messages'
+    const query = cookie.user && cookie.channel === 'Bean / Private Messages'
         ? messagesQuery
             .where('channel', 'in', ["pm" + cookie.user, "pm" + auth.currentUser.email.slice(0, -20)])
             .where('name', 'in', [auth.currentUser.email.slice(0, -20), cookie.user])

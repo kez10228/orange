@@ -136,7 +136,7 @@ const Panel = () => {
     };
 
     const filteredUsers = users?.filter(user => user.uid !== auth.currentUser.uid);
-    const isAvailable = cookies.channel === "Orange / Private Messages";
+    const isAvailable = cookies.channel === "Bean / Private Messages";
     const currentUsername = auth.currentUser.email.slice(0, -20);
     const displayName = currentUsername.charAt(0).toUpperCase() + currentUsername.slice(1);
     const [showSettings, setShowSettings] = useState(false)

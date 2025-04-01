@@ -20,7 +20,7 @@ const Sidebar = () => {
       {isOpen && <Modal onClose={() => setIsOpen(false)} />}
       {showModal2 && <Modal2 onClose={() => setShowModal2(false)} />}
       <div className="fixed top-0 left-0 h-screen w-16 bg-gray-800 m-0 flex flex-col text-white shadow-lg z-10">
-          <ChannelIcon icon={<GiOrange size="28" />} text="Orange / Private Messages" />
+          <ChannelIcon icon={<GiOrange size="28" />} text="Bean / Private Messages" />
           <Divider />
           <ChannelIcon icon={<FaChild size="28" />} text="Everyone :)" />
           <div className="channels">

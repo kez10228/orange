@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
 import 'firebase/compat/firestore';
-import oranges from '../../assets/img/oranges-in-a-box.jpg';
+import oranges from '../../assets/img/beans.jpg';
 
 function Modal2({ onClose }) {
   const modalRef = useRef();
@@ -12,8 +12,8 @@ function Modal2({ onClose }) {
           <FaXmark size={20} color='white' />
         </button>
         
-        <h1 className='text-3xl font-bold'>THE ORANGE ARMY</h1>
-        <h1 className='text-3xl font-bold'>V4.1.1 🥳🥳</h1>
+        <h1 className='text-3xl font-bold'>THE BEAN ARMY</h1>
+        <h1 className='text-3xl font-bold'>V1.0.0 🥳🥳</h1>
 
         <p className='text-center'>This new update includes:</p>
         <ol className='text-center'>
@@ -32,7 +32,11 @@ function Modal2({ onClose }) {
             <li>Also user info (Not quite done, check out my aboutme)</li>
         </ol> 
         <br />
-        <img src={oranges} alt="oranges in a box" className='w-1/4' />
+        <div className='flex flex-row'>
+          <img src={oranges} alt="oranges in a box" className='w-2/4' />
+          <img src={oranges} alt="oranges in a box" className='w-2/4' />
+        </div>
+        
       </div>
     </div>
   );

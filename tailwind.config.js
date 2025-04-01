@@ -16,8 +16,11 @@ module.exports = {
           300: "#e3e5e8",
           200: "#ebedef",
           100: "#f2f3f5",
-        }
-      }
+        },
+        orange: {
+          500: "#a84c0f",
+        },
+      },
     },
   },
   plugins: [],

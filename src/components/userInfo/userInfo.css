@@ -17,12 +17,12 @@
           -45deg,
           orange 0,
           transparent 30px,
-          orangered 30px,
+          brown 30px,
           transparent 60px,
           orange 120px,
           transparent 240px
         );
-        background-color: orange;
+        background-color: brown;
     }
 
     .pfp-userInfo {

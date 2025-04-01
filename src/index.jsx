@@ -22,15 +22,15 @@ const AppWrapper = () => {
   const loadingType = () => {
     if (getRndInteger(1, 3) === 1) {
       return (
-        <GridLoader color={'#ff6600'} loading={loading} size={15} />
+        <GridLoader color={'#a84c0f'} loading={loading} size={15} />
       );
     } else if (getRndInteger(1, 3) === 2) {
       return (
-        <ClockLoader color={'#ff6600'} loading={loading} size={30} />
+        <ClockLoader color={'#a84c0f'} loading={loading} size={30} />
       );
     } else {
       return (
-        <ClimbingBoxLoader color={'#ff6600'} loading={loading} size={15} />
+        <ClimbingBoxLoader color={'#a84c0f'} loading={loading} size={15} />
       );
     }
   }
@@ -41,7 +41,7 @@ const AppWrapper = () => {
       <div className="loading-container">
         {loadingType()}
         <br />
-        <h1 style={{color: 'white'}}>Did you know: you are reading this</h1>
+        <h1 style={{color: 'white'}}>Did you know: Beanz beanz za magic froot za more you eat za more you toot!!!! ⛽⛽⛽</h1>
         <h1>Hee hee you have to do captcha now :)</h1>
         <br />
         <ReCAPTCHA 
