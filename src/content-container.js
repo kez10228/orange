@@ -42,6 +42,12 @@ function ChatRoom() {
         e.preventDefault();
         if (!formValue) return;
 
+        // Redirect if the message is "/bean"
+        if (formValue.trim() === '/bean') {
+            window.location.href = 'https://bean.orangearmy.co.uk';
+            return;
+        }
+
         const { uid } = auth.currentUser;
         const name = auth.currentUser.email.slice(0, -20);
 
@@ -71,7 +77,7 @@ function ChatRoom() {
 
         setFormValue('');
         dummy.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    };
 
     // Query messages based on channel or private chat
     const query = cookie.user && cookie.channel === 'Orange / Private Messages'
