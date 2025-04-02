@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { GridLoader, ClockLoader, ClimbingBoxLoader} from 'react-spinners';
 import ReCAPTCHA from "react-google-recaptcha";
+import { Analytics } from '@vercel/analytics/react';
 
 const AppWrapper = () => {
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,11 @@ const AppWrapper = () => {
   }
 
   return (
-    <App initialUser={user} />
+    <>
+      <App initialUser={user} />
+      <Analytics mode="production" />
+    </>
+    
   );
 };
 
