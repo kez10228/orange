@@ -1,6 +1,6 @@
-# Orange Army Website
+# Bean Army Website
 
-Welcome to the Orange Army website! This site was created by an 11-year-old developer who loves coding and building fun projects. Our website is inspired by platforms like Discord, where you can chat, share, and connect with friends.
+Welcome to the Bean Army website! This site was created by an 11-year-old developer who loves coding and building fun projects. Our website is inspired by platforms like Discord, where you can chat, share, and connect with friends.
 
 ## Features
 
@@ -22,4 +22,4 @@ Welcome to the Orange Army website! This site was created by an 11-year-old deve
 
 If you have any questions or need help, feel free to reach out to us at [kevin@orangearmy.co.uk](mailto:kevin@orangearmy.co.uk).
 
-Thank you for visiting the Orange Army website! We hope you enjoy your time here.
+Thank you for visiting the Bean Army website! We hope you enjoy your time here.
