@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { GridLoader, ClockLoader, ClimbingBoxLoader} from 'react-spinners';
-import ReCAPTCHA from "react-google-recaptcha";
 
 const AppWrapper = () => {
   const [loading, setLoading] = useState(true);

@@ -1,17 +1,39 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Sidebar from "./Sidebar";
 import ContentContainer from "./content-container";  
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Panel from "./panel";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
-import { useEffect } from "react";
 import firebase, { auth, firestore, database } from './config/firebase';
 import ContextMenu from "./components/contextMenu/contextMenu2";
 
 const App = () => {
   const [user] = useAuthState(auth);
-  
+  const [keySequence, setKeySequence] = useState([]);
+  const [showSecretModal, setShowSecretModal] = useState(false);
+
+  // Memoize the secret code to prevent it from being re-created on every render
+  const secretCode = useMemo(() => ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"], []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      setKeySequence((prev) => [...prev, e.key].slice(-secretCode.length));
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [secretCode]);
+
+  useEffect(() => {
+    if (JSON.stringify(keySequence) === JSON.stringify(secretCode)) {
+      setShowSecretModal(true);
+    }
+  }, [keySequence, secretCode]);
+
   // Only run the online/offline logic if user exists
   if (user?.uid) {
     var userStatusDatabaseRef = database.ref('/status/' + user.uid);
@@ -45,6 +67,20 @@ const App = () => {
                 <Panel /><ContentContainer />
               </div>
               <ContextMenu />
+              {showSecretModal && (
+                <div className="modal">
+                  <div className="flex flex-col items-center justify-center gap-5 text-white bg-gray-600 rounded-xl px-10 pt-5 pb-10 mx-4">
+                    <h1 className="text-3xl font-bold">🎉 BEANY BEANS 🎉</h1>
+                    <p>Congratulations! BEANS ARE YUMMY</p>
+                    <button
+                      onClick={() => setShowSecretModal(false)}
+                      className="shadow__btn"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
             </>
           ) : <Navigate to="/signin" />
         } />
