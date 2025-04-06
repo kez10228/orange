@@ -11,7 +11,7 @@
 
     .content-container {
       @apply flex flex-col
-    bg-gray-700 z-[999999999999999999999999]
+    bg-gray-700 z-[9999999]
       m-0 right-0 bottom-0
       fixed inset-0 top-0 left-0 w-full h-full;
 
