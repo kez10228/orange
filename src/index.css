@@ -177,6 +177,10 @@
       @apply flex flex-col h-screen w-full
     }
 
+    .send_btn {
+      @apply border-none
+    }
+
 
     .shadow__btn {
       padding: 10px 20px;

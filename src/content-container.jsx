@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import user from './assets/img/OIG4.jpg';
 import firebase, { auth, firestore } from './config/firebase';
 import { FaArrowLeft } from "react-icons/fa6";
+import { FaPaperPlane } from "react-icons/fa6";
 
 // Chat message component
 function ChatMessage({ message }) {
@@ -133,6 +134,13 @@ function ContentContainer({setShowContent}) {
                             className="input_box" 
                             placeholder="Say something NICE for once" 
                         />
+                        <button 
+                            type="submit" 
+                            className="send_btn"
+                            disabled={!formValue}
+                        >
+                            <FaPaperPlane color='white' size={20} />
+                        </button>
                     </div>
                 </form>
             </div>
