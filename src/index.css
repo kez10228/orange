@@ -11,13 +11,14 @@
 
     .content-container {
       @apply flex flex-col
-    bg-gray-700 pr-96
-      m-0 w-full overflow-y-hidden
-      h-screen pl-5 pb-5;
+    bg-gray-700 z-[999999999999999999999999]
+      m-0 right-0 bottom-0
+      fixed inset-0 top-0 left-0 w-full h-full;
+
     }
     
     .input_box {
-      @apply mt-auto mr-20 rounded-md bg-gray-600 h-10 pl-5 placeholder:text-gray-500
+      @apply mt-auto rounded-md bg-gray-600 h-10 pl-5 placeholder:text-gray-500
        text-gray-400 box-border w-full;
     }
 
@@ -33,6 +34,10 @@
       @apply flex flex-col;
       word-wrap: break-word;
       overflow-wrap: break-word;
+    }
+
+    .navbar {
+      @apply flex flex-row justify-normal items-center bg-gray-800 h-16 w-full px-4 gap-3;
     }
 
     .name {
@@ -53,22 +58,13 @@
     }
 
     .panel {
-      @apply flex flex-col
-      h-screen bg-gray-800 ml-16;
-    }
-
-    .content {
-      @apply flex flex-row
+      @apply flex flex-col h-screen bg-gray-800 ml-16 relative;
+      width: 100% - 16px;
+      min-width: 250px; 
     }
 
     .user {
       @apply bg-gray-900 z-10 h-14 items-center pl-2 w-full inline-block bottom-0 absolute;
-    }
-
-    .panel {
-      @apply flex flex-col h-screen bg-gray-800 ml-16 relative;
-      width: fit-content;
-      min-width: 250px; 
     }
 
     .sub-user {
@@ -100,7 +96,7 @@
     }
 
     .userContainer {
-      @apply h-14 rounded-md bg-gray-800 ml-5 p-2 mb-3 hover:bg-gray-1000 flex content-center w-fit min-w-52 z-[0] relative;
+      @apply h-14 rounded-md bg-gray-800 ml-5 p-2 mb-3 hover:bg-gray-1000 flex content-center w-3/4 min-w-52 z-[0] relative;
     }
     .offline {
       @apply absolute translate-y-7 translate-x-7 z-[0]
@@ -175,6 +171,10 @@
 
     .channels {
       @apply flex flex-col overflow-y-scroll h-full;
+    }
+
+    .side {
+      @apply flex flex-col h-screen w-full
     }
 
 

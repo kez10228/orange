@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useCookies } from 'react-cookie';
-import { FaCirclePlus } from "react-icons/fa6";
-import VideoChat from './components/videoChat/Video';
 import user from './assets/img/OIG4.jpg';
 import firebase, { auth, firestore } from './config/firebase';
+import { FaArrowLeft } from "react-icons/fa6";
 
 // Chat message component
 function ChatMessage({ message }) {
@@ -25,8 +24,7 @@ function ChatMessage({ message }) {
 }
 
 // Chat room component
-function ChatRoom() {
-    const [showVideo, setShowVideo] = useState(false);
+function ContentContainer({setShowContent}) {
     const [cookie, setCookie] = useCookies(['channel', 'user']);
     const [formValue, setFormValue] = useState('');
     const dummy = useRef();
@@ -85,23 +83,49 @@ function ChatRoom() {
 
     const [messages] = useCollectionData(query, { idField: 'id' });
 
+    // Automatically scroll to the bottom when the page loads
+    React.useEffect(() => {
+        const handleResize = () => {
+            if (dummy.current) {
+                dummy.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []); // Empty dependency array ensures this runs only on mount
+
     React.useEffect(() => {
         if (dummy.current) {
-            dummy.current.scrollIntoView({ behavior: 'instant' });
+            dummy.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages]);
+    let channelName = cookie.channel;
+    if (cookie.user && cookie.channel === 'Orange / Private Messages') {
+        channelName = cookie.user;
+    }
 
     return (
         <>
-            {showVideo && <VideoChat onClose={() => setShowVideo(false)} />}
             <div className="content-container">
+                <div className="navbar">
+                    <button onClick={() => setShowContent(false)} className='border-none'>
+                        <FaArrowLeft color='white' size={20}/>
+                    </button>
+                    
+                    <p>{channelName}</p>
+                </div>
                 <div style={{ height: '100vh', overflowY:'scroll' , overflowX: 'hidden'}} className='chatbox'>
                     {messages && messages.map((msg, index) => <ChatMessage key={`${msg.id}-${index}`} message={msg} />)}
                     <span ref={dummy}></span>
                 </div>
                 <form onSubmit={sendMessage} style={{ overflow: 'hidden', padding: '10px' }}>
                     <div className='flex flex-row gap-3 items-center justify-start'>
-                        <FaCirclePlus size={28} color='white' onClick={() => setShowVideo(true)} />
                         <input 
                             value={formValue} 
                             onChange={(e) => setFormValue(e.target.value)} 
@@ -114,10 +138,6 @@ function ChatRoom() {
             </div>
         </>
     );
-}
-
-const ContentContainer = () => {
-    return <ChatRoom />;
 }
 
 export default ContentContainer;

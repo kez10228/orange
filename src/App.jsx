@@ -7,10 +7,18 @@ import Panel from "./panel";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
 import firebase, { auth, firestore, database } from './config/firebase';
-import ContextMenu from "./components/contextMenu/contextMenu2";
+
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  if (args[0].includes('ResizeObserver loop completed with undelivered notifications')) {
+    return;
+  }
+  originalConsoleError(...args);
+};
 
 const App = () => {
   const [user] = useAuthState(auth);
+  const [showContent, setShowContent] = React.useState(false);
   
   // Only run the online/offline logic if user exists
   if (user?.uid) {
@@ -40,11 +48,11 @@ const App = () => {
         <Route path="/chat" element={
           user ? (
             <>
-              <Sidebar />
-              <div className="content">
-                <Panel /><ContentContainer />
+              <div className="side">
+                <Sidebar setShowContent={setShowContent} />
+                <Panel setShowContent={setShowContent} />
+                {showContent && <ContentContainer setShowContent={setShowContent} />}
               </div>
-              <ContextMenu />
             </>
           ) : <Navigate to="/signin" />
         } />
