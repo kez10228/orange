@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
-import pfp from '../../assets/img/OIG4.jpg';
-import { firestore, auth } from '../../config/firebase';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import './settings.css';
-import OnlinePresence from '../../assets/svgs/OnlinePresence';
+import pfp from "../../assets/img/OIG4.jpg";
+import { firestore, auth } from "../../config/firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import "./settings.css";
+import OnlinePresence from "../../assets/svgs/OnlinePresence";
 
 function Settings({ onClose }) {
   const modalRef = useRef();
@@ -12,8 +12,8 @@ function Settings({ onClose }) {
   const [about, setAbout] = useState("No about me set yet!"); // State for "about"
   const [originalAbout, setOriginalAbout] = useState(""); // Store the original "about" value
   const currentUsername = auth.currentUser.email.slice(0, -20);
-  const usersRef = firestore.collection('user-info');
-  const [users] = useCollectionData(usersRef, { idField: 'id' });
+  const usersRef = firestore.collection("user-info");
+  const [users] = useCollectionData(usersRef, { idField: "id" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +30,10 @@ function Settings({ onClose }) {
       if (!userDoc.empty) {
         // Update the "about" field in the user's document
         const docId = userDoc.docs[0].id; // Get the document ID
-        await firestore.collection("user-info").doc(docId).update({about: about});
+        await firestore
+          .collection("user-info")
+          .doc(docId)
+          .update({ about: about });
 
         // Update the originalAbout state to reflect the saved value
         setOriginalAbout(about);
@@ -41,12 +44,14 @@ function Settings({ onClose }) {
     } catch (error) {
       console.error("Error updating About Me:", error);
     }
-  }
+  };
 
   // Update "about" when users data changes
   React.useEffect(() => {
     if (users) {
-      const currentUser = users.find(user => user.username === currentUsername);
+      const currentUser = users.find(
+        (user) => user.username === currentUsername
+      );
       if (currentUser) {
         const aboutValue = currentUser.about || "No about me set yet!";
         setAbout(aboutValue);
@@ -80,11 +85,11 @@ function Settings({ onClose }) {
               />
               {/* Show the Save button only if the about value has changed */}
               {about !== originalAbout && (
-                <button 
+                <button
                   className="p-3 
                   self-center border-none 
                   bg-blue-800hover:bg-blue-900"
-                  type='submit'
+                  type="submit"
                 >
                   Save
                 </button>

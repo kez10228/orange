@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { GridLoader, ClockLoader, ClimbingBoxLoader } from 'react-spinners';
-import { Analytics } from '@vercel/analytics/react';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { GridLoader, ClockLoader, ClimbingBoxLoader } from "react-spinners";
+import { Analytics } from "@vercel/analytics/react";
 
 const AppWrapper = () => {
   const [loading, setLoading] = useState(true);
   const [user] = useState(null);
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
-    if (isMobile && window.location.href !== "https://mobile.orangearmy.co.uk") {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(
+      window.navigator.userAgent
+    );
+    if (
+      isMobile &&
+      window.location.href !== "https://mobile.orangearmy.co.uk"
+    ) {
       window.location.href = "https://mobile.orangearmy.co.uk";
     }
   }, []);
@@ -31,11 +36,13 @@ const AppWrapper = () => {
   const loadingType = () => {
     const randomNumber = getRndInteger(1, 3);
     if (randomNumber === 1) {
-      return <GridLoader color={'#ff6600'} loading={loading} size={15} />;
+      return <GridLoader color={"#ff6600"} loading={loading} size={15} />;
     } else if (randomNumber === 2) {
-      return <ClockLoader color={'#ff6600'} loading={loading} size={30} />;
+      return <ClockLoader color={"#ff6600"} loading={loading} size={30} />;
     } else {
-      return <ClimbingBoxLoader color={'#ff6600'} loading={loading} size={15} />;
+      return (
+        <ClimbingBoxLoader color={"#ff6600"} loading={loading} size={15} />
+      );
     }
   };
 
@@ -44,7 +51,7 @@ const AppWrapper = () => {
       <div className="loading-container" aria-live="polite">
         {loadingType()}
         <br />
-        <h1 style={{ color: 'white' }}>Did you know: you are reading this</h1>
+        <h1 style={{ color: "white" }}>Did you know: you are reading this</h1>
       </div>
     );
   }
@@ -57,5 +64,5 @@ const AppWrapper = () => {
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<AppWrapper />);
