@@ -5,6 +5,7 @@ import { firestore, auth } from "../../config/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import "./settings.css";
 import OnlinePresence from "../../assets/svgs/OnlinePresence";
+import { FaArrowUpFromBracket } from "react-icons/fa6";
 
 function Settings({ onClose }) {
   const modalRef = useRef();
@@ -46,6 +47,7 @@ function Settings({ onClose }) {
     }
   };
 
+
   // Update "about" when users data changes
   React.useEffect(() => {
     if (users) {
@@ -66,9 +68,46 @@ function Settings({ onClose }) {
       <div className="setting-box">
         <p className="setting-title">My Account</p>
         <div className="profile-border">
-          {/* From UIVERSE.COM by catraco */}
           <div className="container setting-pattern-1"></div>
-          <img src={pfp} alt="pfp" className="pfp-userInfo" />
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="relative group w-16 h-16 rounded-full">
+              {/* Hidden file input */}
+              <input
+                type="file"
+                accept="image/*"
+                id="file-input"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      // Update the profile picture preview
+                      document.querySelector(".pfp-userInfo").src =
+                        reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+
+              {/* Profile picture */}
+              <img src={pfp} alt="Profile" className="pfp-settings" />
+
+              {/* Upload icon */}
+              <div
+                className="pfp-settings absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer"
+                onClick={() => document.getElementById("file-input").click()}
+              >
+                <FaArrowUpFromBracket
+                  className="text-white absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer place-self-center"
+                  size={24}
+                  onClick={() => document.getElementById("file-input").click()}
+                />
+              </div>
+            </div>
+          </form>
+
           <OnlinePresence onlineClassName="online-settings" />
           <div className="-translate-y-3">
             <p className="username-info">{currentUsername}</p>
@@ -87,8 +126,8 @@ function Settings({ onClose }) {
               {about !== originalAbout && (
                 <button
                   className="p-3 
-                  self-center border-none 
-                  bg-blue-800hover:bg-blue-900"
+                    self-center border-none 
+                    bg-blue-800 hover:bg-blue-900"
                   type="submit"
                 >
                   Save

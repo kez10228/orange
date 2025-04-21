@@ -33,4 +33,7 @@
   .settings-about-me {
     @apply translate-x-4 pr-4 pb-4;
   }
+  .pfp-settings {
+    @apply w-16 h-16 rounded-full translate-x-4 -translate-y-4;
+  }
 }
