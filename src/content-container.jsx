@@ -8,26 +8,29 @@ import firebase, { auth, firestore } from "./config/firebase";
 
 // Chat message component
 function ChatMessage({ message }) {
-  const { text, name } = message;
+  const { text, name, pfp } = message;
 
   return (
     <div className="chat-msg w-full">
-      <img src={user} alt="pfp" className="pfp" />
+      <img
+        src={pfp || user} // Use the PFP from the message or a default image
+        alt="pfp"
+        className="pfp"
+      />
       <div
         className="msg-content break-words"
         style={{
           wordWrap: "break-word",
           whiteSpace: "pre-wrap",
           maxWidth: "90%",
-        }} // Restrict width
+        }}
       >
         <p className="name" style={{ fontWeight: "bold" }}>
           {name}
         </p>
         <p style={{ margin: 0 }} className="w-full">
           {text}
-        </p>{" "}
-        {/* Remove unnecessary classes */}
+        </p>
       </div>
     </div>
   );
@@ -51,18 +54,20 @@ function ChatRoom() {
     e.preventDefault();
     if (!formValue) return;
 
-    // Redirect if the message is "/bean"
-    if (formValue.trim() === "/bean") {
-      window.location.href = "https://bean.orangearmy.co.uk";
-      return;
-    }
-
     const { uid } = auth.currentUser;
     const name = auth.currentUser.email.slice(0, -20);
 
-    if (cookie.channel === "Orange / Private Messages" && !cookie.user) {
-      alert("Please select a user to send a message to!");
-      return;
+    // Fetch the user's PFP from the "user-info" collection
+    const userDoc = await firestore
+      .collection("user-info")
+      .where("username", "==", name)
+      .get();
+
+    let pfp = "http://api.orangearmy.co.uk/uploads/1745349689288-OIG4.jpg"; // Default PFP
+    if (!userDoc.empty) {
+      const userPfp = userDoc.docs[0].data().pfp || "1745349689288-OIG4.jpg"; // Default filename if no PFP
+      pfp = `http://api.orangearmy.co.uk/uploads/${userPfp}`; // Prepend the base URL
+      console.log("PFP URL:", pfp); // Log the PFP URL for debugging
     }
 
     const channel =
@@ -80,6 +85,7 @@ function ChatRoom() {
         uid,
         name,
         channel,
+        pfp, // Include the full PFP URL in the message
       };
 
       await messagesRef.add(messageData); // Use the collection reference to add a message

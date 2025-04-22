@@ -18,6 +18,7 @@ const UserIndicator = ({
   setContextMenu,
   setIsUserOpened,
   handleClicked,
+  pfp
 }) => {
   const onlinePresence = <OnlinePresence onlineClassName="online2" />;
 
@@ -57,7 +58,7 @@ const UserIndicator = ({
       onClick={() => handleClicked(text, state)}
       onContextMenu={(e) => handleContextMenu(e, text)}
     >
-      <img src={user} alt="pfp" className="pfp" />
+      {pfp ? <img src={"http://api.orangearmy.co.uk/uploads/" + pfp} alt="pfp" className="pfp" /> : <img src={user} alt="pfp" className="pfp" />}
       <p className="username">{text}</p>
       {state === "online" ? onlinePresence : offlinePresence}
     </div>
@@ -78,6 +79,7 @@ const Panel = () => {
     createdAt: "8 February 2025 at 12:25:10 UTC", // Assuming the default user joined at the current date
     about:
       "This is a special user (creator of website). His pronouns are depre/ssed and his pet is called depression. BTW I need money donate please.",
+    pfp: "1745348724446-istockphoto-185284489-612x612.jpg"
   });
   const contextMenuRef = useRef(null);
   useEffect(() => {
@@ -141,6 +143,7 @@ const Panel = () => {
         status: state,
         createdAt: userData.createdAt.toDate(),
         about: userData.about || "No additional information provided.",
+        pfp: userData.pfp || "1745349689288-OIG4.jpg",
       });
     } else {
       setUserInfo(null);
@@ -168,6 +171,7 @@ const Panel = () => {
                 state={statusData[user.uid]?.state || "offline"}
                 key={user.uid}
                 text={user.username}
+                pfp={user.pfp}
                 contextMenuRef={contextMenuRef}
                 setContextMenu={setContextMenu}
                 setIsUserOpened={setIsUserOpened}

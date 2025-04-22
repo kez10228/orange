@@ -6,6 +6,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import "./settings.css";
 import OnlinePresence from "../../assets/svgs/OnlinePresence";
 import { FaArrowUpFromBracket } from "react-icons/fa6";
+import { UpdateOldMessages } from "../../test";
 
 function Settings({ onClose }) {
   const modalRef = useRef();
@@ -47,7 +48,6 @@ function Settings({ onClose }) {
     }
   };
 
-
   // Update "about" when users data changes
   React.useEffect(() => {
     if (users) {
@@ -77,16 +77,65 @@ function Settings({ onClose }) {
                 accept="image/*"
                 id="file-input"
                 className="hidden"
-                onChange={(e) => {
+                onChange={async (e) => {
                   const file = e.target.files[0];
                   if (file) {
+                    // Preview the image
                     const reader = new FileReader();
                     reader.onload = () => {
-                      // Update the profile picture preview
-                      document.querySelector(".pfp-userInfo").src =
+                      document.querySelector(".pfp-settings").src =
                         reader.result;
                     };
                     reader.readAsDataURL(file);
+
+                    // Upload the file to the server
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    try {
+                      const response = await fetch(
+                        "http://api.orangearmy.co.uk/upload",
+                        {
+                          method: "POST",
+                          body: formData,
+                        }
+                      );
+
+                      if (response.ok) {
+                        const data = await response.json();
+                        const uploadedFileUrl = data.imageUrl; // Get the full file URL from the server
+                        alert("File uploaded successfully!");
+                        console.log("Uploaded file URL:", uploadedFileUrl);
+
+                        // Update the "pfp" field in Firebase with the unique filename or URL
+                        const userDoc = await firestore
+                          .collection("user-info")
+                          .where("username", "==", currentUsername)
+                          .get();
+
+                        if (!userDoc.empty) {
+                          const docId = userDoc.docs[0].id; // Get the document ID
+                          await firestore
+                            .collection("user-info")
+                            .doc(docId)
+                            .update({ pfp: uploadedFileUrl }); // Save the full URL or unique filename
+                        } else {
+                          console.error("User document not found.");
+                        }
+                      } else {
+                        console.error(
+                          "Failed to upload file:",
+                          response.statusText
+                        );
+                        alert("Failed to upload file.");
+                      }
+                    } catch (error) {
+                      console.error("Error uploading file:", error);
+                      alert("An error occurred while uploading the file.");
+                    }
+                    UpdateOldMessages(); // Call the function to update old messages with the new PFP
+                    // Reset the file input value
+                    e.target.value = "";
                   }
                 }}
               />
@@ -97,12 +146,11 @@ function Settings({ onClose }) {
               {/* Upload icon */}
               <div
                 className="pfp-settings absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer"
-                onClick={() => document.getElementById("file-input").click()}
+                onClick={() => document.getElementById("file-input").click()} // Trigger file input
               >
                 <FaArrowUpFromBracket
                   className="text-white absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer place-self-center"
                   size={24}
-                  onClick={() => document.getElementById("file-input").click()}
                 />
               </div>
             </div>
