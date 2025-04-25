@@ -18,10 +18,10 @@ export const UpdateOldMessages = async () => {
         .where("username", "==", username)
         .get();
 
-      let pfp = "http://api.orangearmy.co.uk/uploads/1745349689288-OIG4.jpg";
+      let pfp = "https://api.orangearmy.co.uk/uploads/1745349689288-OIG4.jpg"; // Changed to https
       if (!userDoc.empty) {
         const userPfp = userDoc.docs[0].data().pfp || "1745349689288-OIG4.jpg";
-        pfp = `http://api.orangearmy.co.uk/uploads/${userPfp}`;
+        pfp = `https://api.orangearmy.co.uk/uploads/${userPfp}`; // Changed to https
       }
 
       await firestore.collection("messages").doc(messageDoc.id).update({

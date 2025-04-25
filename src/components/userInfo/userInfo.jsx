@@ -13,7 +13,15 @@ function UserInfo({ userInfo }) {
     <div className="userInfo">
       {/* From UIVERSE.COM by catraco */}
       <div className="container"></div>
-      {pfp ? <img src={"http://api.orangearmy.co.uk/uploads/" + pfp} alt="pfp" className="pfp-userInfo" /> : <img src={user} alt="pfp" className="pfp-userInfo" />}
+      {pfp ? (
+        <img
+          src={"https://api.orangearmy.co.uk/uploads/" + pfp} // Changed to https
+          alt="pfp"
+          className="pfp-userInfo"
+        />
+      ) : (
+        <img src={user} alt="pfp" className="pfp-userInfo" />
+      )}
       <p className="username-info">{username}</p>
       <p className="status-info">{status}</p>
       {status === "online" ? onlineStatus : offlineStatus}

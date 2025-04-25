@@ -94,7 +94,7 @@ function Settings({ onClose }) {
 
                     try {
                       const response = await fetch(
-                        "http://api.orangearmy.co.uk/upload",
+                        "https://api.orangearmy.co.uk/upload", // Changed to https
                         {
                           method: "POST",
                           body: formData,

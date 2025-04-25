@@ -63,11 +63,10 @@ function ChatRoom() {
       .where("username", "==", name)
       .get();
 
-    let pfp = "http://api.orangearmy.co.uk/uploads/1745349689288-OIG4.jpg"; // Default PFP
+    let pfp = "https://api.orangearmy.co.uk/uploads/1745349689288-OIG4.jpg"; // Changed to https
     if (!userDoc.empty) {
-      const userPfp = userDoc.docs[0].data().pfp || "1745349689288-OIG4.jpg"; // Default filename if no PFP
-      pfp = `http://api.orangearmy.co.uk/uploads/${userPfp}`; // Prepend the base URL
-      console.log("PFP URL:", pfp); // Log the PFP URL for debugging
+      const userPfp = userDoc.docs[0].data().pfp || "1745349689288-OIG4.jpg";
+      pfp = `https://api.orangearmy.co.uk/uploads/${userPfp}`; // Changed to https
     }
 
     const channel =
