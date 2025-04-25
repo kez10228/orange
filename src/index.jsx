@@ -4,13 +4,10 @@ import "./index.css";
 import App from "./App";
 import { GridLoader, ClockLoader, ClimbingBoxLoader } from "react-spinners";
 import { Analytics } from "@vercel/analytics/react";
-import { UpdateOldMessages } from "./test";
 
 const AppWrapper = () => {
   const [loading, setLoading] = useState(true);
   const [user] = useState(null);
-
-  UpdateOldMessages(); // Call the function to update old messages
 
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(
