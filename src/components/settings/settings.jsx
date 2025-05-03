@@ -133,7 +133,6 @@ function Settings({ onClose }) {
                       console.error("Error uploading file:", error);
                       alert("An error occurred while uploading the file.");
                     }
-                    UpdateOldMessages(); // Call the function to update old messages with the new PFP
                     // Reset the file input value
                     e.target.value = "";
                   }
