@@ -80,6 +80,25 @@ function Settings({ onClose }) {
                 onChange={async (e) => {
                   const file = e.target.files[0];
                   if (file) {
+                    // Validate file size (10 MB limit)
+                    if (file.size > 10 * 1024 * 1024) {
+                      alert("File size exceeds the 10 MB limit.");
+                      e.target.value = ""; // Reset file input
+                      return;
+                    }
+
+                    // Validate file type
+                    const allowedTypes = [
+                      "image/jpeg",
+                      "image/png",
+                      "image/gif",
+                    ];
+                    if (!allowedTypes.includes(file.type)) {
+                      alert("Only JPEG, PNG, and GIF files are allowed.");
+                      e.target.value = ""; // Reset file input
+                      return;
+                    }
+
                     // Preview the image
                     const reader = new FileReader();
                     reader.onload = () => {
@@ -101,33 +120,32 @@ function Settings({ onClose }) {
                         }
                       );
 
-                      if (response.ok) {
-                        const data = await response.json();
-                        const uploadedFileUrl = data.imageUrl; // Get the full file URL from the server
-                        alert("File uploaded successfully!");
-                        console.log("Uploaded file URL:", uploadedFileUrl);
+                      if (!response.ok) {
+                        const errorMessage = await response.text();
+                        console.error("Failed to upload file:", errorMessage);
+                        alert(`Failed to upload file: ${errorMessage}`);
+                        return;
+                      }
 
-                        // Update the "pfp" field in Firebase with the unique filename or URL
-                        const userDoc = await firestore
+                      const data = await response.json();
+                      const uploadedFileUrl = data.imageUrl; // Get the full file URL from the server
+                      alert("File uploaded successfully!");
+                      console.log("Uploaded file URL:", uploadedFileUrl);
+
+                      // Update the "pfp" field in Firebase with the unique filename or URL
+                      const userDoc = await firestore
+                        .collection("user-info")
+                        .where("username", "==", currentUsername)
+                        .get();
+
+                      if (!userDoc.empty) {
+                        const docId = userDoc.docs[0].id; // Get the document ID
+                        await firestore
                           .collection("user-info")
-                          .where("username", "==", currentUsername)
-                          .get();
-
-                        if (!userDoc.empty) {
-                          const docId = userDoc.docs[0].id; // Get the document ID
-                          await firestore
-                            .collection("user-info")
-                            .doc(docId)
-                            .update({ pfp: uploadedFileUrl }); // Save the full URL or unique filename
-                        } else {
-                          console.error("User document not found.");
-                        }
+                          .doc(docId)
+                          .update({ pfp: uploadedFileUrl }); // Save the full URL or unique filename
                       } else {
-                        console.error(
-                          "Failed to upload file:",
-                          response.statusText
-                        );
-                        alert("Failed to upload file.");
+                        console.error("User document not found.");
                       }
                     } catch (error) {
                       console.error("Error uploading file:", error);
